@@ -444,13 +444,13 @@ The dragonfly topology can provide the ability for building high-radix, low-diam
 
 Even with such powerful network, the interference between concurrently running jobs is still a major factor impacting jobs' performance \cite{bhatele2015, dskinner}. Some research work propose that random job placement coupled with adaptive routing strategies can alleviate local congestion, eliminate hot-spots and reach load-balance for dragonfly networks \cite{jain-sc14, bhatele-sc11, brandt2014}. They got this conclusion with different simulation tools and various synthetic workloads.
 
-This is paper, we study the interference between concurrently running jobs on Dragonfly network with different job allocation policies and routing algorithms. Being unorthodox to most existing work, we use real application traces that collected from production system in our study. The advantage of using real application traces instead of synthetic workload is quite obvious. The traces collected from production system can capture application's communication behavior in detail that usually omitted in synthetic workload for the purpose of simplicity. 
+This is paper, we study the interference between concurrently running jobs on Dragonfly network with different job allocation policies and routing algorithms. Being unorthodox to most existing work, we use real application traces that collected from production system instead of synthetic workloads. The advantage of using real application traces is quite obvious. The traces collected from production system can capture application's communication behavior in detail that usually omitted in synthetic workload for the purpose of simplicity. 
 
 
-In this work, we focus on analyzing interference between concurrently running jobs on a 4K-node Dragonfly network. In the meanwhile, we also evaluate the network performance and jobs' performance when the Dragonfly network is configured with different job allocation strategies and routing algorithms. The job allocation strategies used in our study are Compact allocation and Random allocation, both of which can be seen in existing production HPC systems. The routing strategies been analyzed in this work are Minimal, Nonminimal and Adaptive.  
+We also evaluate the network performance and jobs' performance when the Dragonfly network is configured with different job allocation strategies and routing algorithms. The job allocation strategies used in our study are Compact allocation and Random allocation, both of which can be seen in existing production HPC systems. The routing strategies been analyzed in this work are Minimal, Nonminimal and Adaptive.  
 
 
-We made observation from our comprehensive study that, when Dragonfly network enabled with random job allocation and adaptive routing in order to reach hotspot free and load balance, the performance of particular job would be impaired. The communication intensive jobs in the workload can benefit from random allocation and adaptive routing, with great performance improvement. Unfortunately, those less intensive jobs are the sacrifices for this improvement, their performance will be greatly reduced. The findings in this work also reconfirm that interference between concurrently running jobs would make the performance of some jobs every unpredictable. The detailed analysis about the traffic and congestion in network level unveil the undercurrent beneath that interference.  
+We made observation from our comprehensive study that, when dragonfly network enabled with random job allocation and adaptive routing in order to reach hot-spot free and load balance, the performance of particular job would be impaired. The communication intensive jobs in the workload can benefit from random allocation and adaptive routing, with great performance improvement. Unfortunately, those less intensive jobs are the sacrifices for this improvement, their performance will be greatly reduced. The findings in this work also reconfirm that interference between concurrently running jobs would make the performance of some jobs every unpredictable. The detailed analysis about the traffic and congestion in network level unveil the undercurrent beneath that interference.  
 
 This work makes the following contributions:
 
@@ -472,7 +472,7 @@ To the best of our knowledge, using real application traces for the study of job
 \section{Application Study}
 \label{sec:app study}
 
-We choose three representative applications from DOE Design Forward Project\cite{designforwardwebpage}. . We believe these applications can be representative of a wide array of applications running on leadership-class supercomputers. Sepcifically, we study the Algebraic MultiGrid Solver (AMG), Geometric MultiGrid (MultiGrid) and CrystalRouter MiniApps. 
+We choose three representative applications from DOE Design Forward Project\cite{designforwardwebpage}. . We believe these applications can be representative of a wide array of applications running on leadership-class supercomputers. Specifically, we study the Algebraic MultiGrid Solver (AMG), Geometric MultiGrid (MultiGrid) and CrystalRouter MiniApps. 
 
 
  AMG: The Algebraic MultiGrid Solver, is a parallel algebraic multi-grid solver for linear systems arising from problems on unstructured mesh physics packages. It has been derived directly from the BoomerAMG solver that is being developed in the Center for Applied Scientific Computing (CASC) at LLNL\cite{amg}.
@@ -492,13 +492,16 @@ The amount of transferring data of each application are shown in Figure \ref{fig
 
 \section{Dragonfly Network}
 \label{sec:network}
+It is difficult to do experiment with concurrently running jobs on HPC system. One reason is that job placement and routing strategy are part of system configuration, it is impossible for user to make changes at will. Another reason is that it is unrealistic to reserve the system exclusively to run the same batch of jobs with desired placement and routing configurations and compare the results. Therefore, we resort to simulation in our work.
 
-
-
+A simulation toolkit named CODES enables the exploration of simulating different HPC networks with high fidelity and great scalability\cite{codes}.  CODES support dragonfly network with high fidelity flit-level simulation\cite{codes-dragonfly}. It has this network workload component that is capable of taking real MPI application traces generated by SST DUMPI\cite{sst} for trace-driven simulations.
 
 
 \section{Job Placement and Routing}
 \label{sec:placement-routing}
+
+
+
 
 
 \section{Evaluation}
@@ -635,7 +638,7 @@ The authors would like to thank...
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
 % the document is modified later
-\IEEEtriggeratref{4}
+%\IEEEtriggeratref{4}
 
 
 \bibliographystyle{IEEEtran}
