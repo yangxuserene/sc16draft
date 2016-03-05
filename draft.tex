@@ -16,40 +16,6 @@
 %% and
 %% http://www.ieee.org/
 
-%%*************************************************************************
-%% Legal Notice:
-%% This code is offered as-is without any warranty either expressed or
-%% implied; without even the implied warranty of MERCHANTABILITY or
-%% FITNESS FOR A PARTICULAR PURPOSE! 
-%% User assumes all risk.
-%% In no event shall the IEEE or any contributor to this code be liable for
-%% any damages or losses, including, but not limited to, incidental,
-%% consequential, or any other damages, resulting from the use or misuse
-%% of any information contained here.
-%%
-%% All comments are the opinions of their respective authors and are not
-%% necessarily endorsed by the IEEE.
-%%
-%% This work is distributed under the LaTeX Project Public License (LPPL)
-%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
-%% distributed and modified. A copy of the LPPL, version 1.3, is included
-%% in the base LaTeX documentation of all distributions of LaTeX released
-%% 2003/12/01 or later.
-%% Retain all contribution notices and credits.
-%% ** Modified files should be clearly indicated as such, including  **
-%% ** renaming them and changing author support contact information. **
-%%*************************************************************************
-
-
-% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
-% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
-% *** with production work. The IEEE's font choices and paper sizes can   ***
-% *** trigger bugs that do not appear when using other class files.       ***                          ***
-% The testflow support page is at:
-% http://www.michaelshell.org/tex/testflow/
-
-
-
 \documentclass[conference,compsoc]{IEEEtran}
 % Some/most Computer Society conferences require the compsoc mode option,
 % but others may want the standard conference format.
@@ -57,14 +23,6 @@
 % If IEEEtran.cls has not been installed into the LaTeX system files,
 % manually specify the path to it like:
 % \documentclass[conference,compsoc]{../sty/IEEEtran}
-
-
-
-
-
-% Some very useful LaTeX packages include:
-% (uncomment the ones you want to load)
-
 
 % *** MISC UTILITY PACKAGES ***
 %
@@ -84,9 +42,6 @@
 % \ifCLASSINFOpdf conditional that works the same way.
 % When switching from latex to pdflatex and vice-versa, the compiler may
 % have to be run twice to clear warning/error messages.
-
-
-
 
 
 
@@ -315,6 +270,10 @@
 
 \usepackage{graphicx} % Required for including pictures
 \graphicspath{{pics/}} % Specifies the directory where pictures are stored
+\usepackage{caption}
+\usepackage{subcaption}
+
+
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
 % *** Do not use packages that alter fonts (such as pslatex).         ***
@@ -477,12 +436,12 @@ We choose three representative applications from DOE Design Forward Project\cite
 
  AMG: The Algebraic MultiGrid Solver, is a parallel algebraic multi-grid solver for linear systems arising from problems on unstructured mesh physics packages. It has been derived directly from the BoomerAMG solver that is being developed in the Center for Applied Scientific Computing (CASC) at LLNL\cite{amg}.
 
-\begin{figure*}[t!]
-  \centering
-  \includegraphics[height=2.2in]{data_amount}
-  \caption{Applications data transfer amount}
-  \label{fig:3app-data-amount}
-\end{figure*}
+% \begin{figure*}[t!]
+%   \centering
+%   \includegraphics[height=2.2in]{data_amount}
+%   \caption{Applications data transfer amount}
+%   \label{fig:3app-data-amount}
+% \end{figure*}
 
 MultiGrid: massively parallel block-structured adaptive mesh refinement (AMR) codes a software framework for massively parallel block-structured adaptive mesh refinement (AMR) codes\cite{boxlib}. It is widely used for structured grid physics packages.
 
@@ -506,6 +465,65 @@ A simulation toolkit named CODES enables the exploration of simulating different
 
 \section{Evaluation}
 \label{sec:evaluation}
+
+\subsection{Workload Overview}
+\label{sec: workload overview}
+
+We make a workload that consists of these three applications and simulate the running of this workload on dragonfly network. In our simulation, we adopt two job placement policies, Contiguous and Random, for mapping application MPI ranks to network terminal nodes. We also try two routing algorithms are commonly used in dragonfly network, Adaptive and Minimal. Therefore, there are 4 configurations “Contiguous placement with Adaptive routing” , “Contiguous placement with Minimal routing”, “Random placement with  Adaptive routing” and “Random placement with Minimal routing”. 
+
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/tl-traffic}
+        \caption{Terminal Link Traffic}
+        \label{fig:terminal-link-traffic}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/lc-traffic}
+        \caption{Local Channel Traffic}
+        \label{fig:local-channel-traffic}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/gc-traffic}
+        \caption{Global Channel Traffic}
+        \label{fig:global-channel-traffic}
+    \end{subfigure}%
+   \caption{Network Traffic.}
+   \label{fig:wkld-network-traffic}
+\end{figure*}
+
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/tl-stime}
+        \caption{Terminal Link Busy Time}
+        \label{fig:terminal-link-stime}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/lc-stime}
+        \caption{Local Channel Busy Time}
+        \label{fig:local-channel-stime}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/gc-stime}
+        \caption{Global Channel Busy Time}
+        \label{fig:global-channel-stime}
+    \end{subfigure}%
+   \caption{Network Channel Busy Time.}
+   \label{fig:wkld-network-stime}
+\end{figure*}
+
+Figure \ref{fig:wkld-network-traffic} and Figure \ref{fig:global-channel-stime} shows that random job placement with adaptive routing can distribute workload traffic and balance the load over the network. Contiguous job placement 
 
 
 \section{Related Work}
