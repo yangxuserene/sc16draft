@@ -619,13 +619,21 @@ Why AMG is the only victim in the workload? The reason for CrystalRouter and Mul
   \label{fig:3app-data-amount}
 \end{figure*}
 
-Apparently, random placement and adaptive routing is quite efficient for orchestrate the traffic load in the network. Random placement and adaptive routing can uniformly distribute the workload traffic all over the network, make the load-balanced and avoid hot-spots. However, application like AMG will be impaired in this orchestration. The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications. Beneath the facade of harmony, less communication-intensive application are bullied by their communication-intensive peers in the workload. 
+Apparently, random placement and adaptive routing is quite efficient for orchestrate the traffic load in the network. Random placement and adaptive routing can uniformly distribute the workload traffic all over the network, make the load-balanced and avoid hot-spots. However, application like AMG will be impaired in this orchestration. The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications. Beneath the facade of harmony, less communication-intensive application are ``bullied" by their communication-intensive peers in the workload. 
 
 
-\section{Analysis of Synthetic Workloads}
+\subsection{Analysis of Synthetic Workloads}
 
-To validate our assumption, we generate synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. 
+To validate our assumption, we generate synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. We run the new workload that consists of sAMG, MG and CR on the same dragonfly network with the same placement and routing configurations. As shown in Figure \ref{fig:syn-3app-data-amount}, sAMG become the most communication-intensive application in the new workload. 
 
+\begin{figure*}[t!]
+  \centering
+  \includegraphics[height=2.2in]{syn-wkld/data_amount}
+  \caption{Applications Data Transfer Amount. sAMG has the most amount of data transfer, compared with CR and MG.}
+  \label{fig:syn-3app-data-amount}
+\end{figure*}
+
+The communication time of each application shown in Figure \ref{fig:syn-apps-commtime}. The ``bully" become the ``bullyee". The less communication-intensive application, CrystalRouter and MultiGrid, suffer prolonged communication time when running concurrently with sAMG with random placement and adaptive routing configuration. The routers that belongs to MultiGrid  and now CrystalRouter has extra traffic go through them, shown in Figure  \ref{fig:syn-mg-lc-traffic} \ref{fig:syn-mg-gc-traffic} and Figure \ref{fig:syn-cr-lc-traffic} \ref{fig:syn-cr-gc-traffic}. The extra traffic come from sAMG, that been redirected by adaptive routing. 
 
 \begin{figure*}[t!]
     \centering
@@ -633,25 +641,91 @@ To validate our assumption, we generate synthetic application, sAMG, which are s
         \centering
         \includegraphics[height=1.5 in]{syn-wkld/amg10/commtime}
         \caption{sAMG Communication Time}
-        \label{fig:amg-commtime}
+        \label{fig:samg-commtime}
     \end{subfigure}%
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.5 in]{syn-wkld/mg/commtime}
         \caption{MG Communication Time}
-        \label{fig:mg-commtime}
+        \label{fig:syn-mg-commtime}
     \end{subfigure}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.5 in]{syn-wkld/cr/commtime}
         \caption{CR Communication Time}
-        \label{fig:cr-commtime}
+        \label{fig:syn-cr-commtime}
     \end{subfigure}%
    \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement and routing configurations. Random placement and adaptive routing can improves AMG's communication time. MG and CR communication time are prolonged with random placement and adaptive routing.}
-   \label{fig:apps-commtime}
+   \label{fig:syn-apps-commtime}
 \end{figure*}
 
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/amg10/lc-traffic}
+        \caption{AMG Local Channel Traffic}
+        \label{fig:samg-lc-traffic}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/mg/lc-traffic}
+        \caption{MG Local Channel Traffic}
+        \label{fig:syn-mg-lc-traffic}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/cr/lc-traffic}
+        \caption{CR Local Channel Traffic}
+        \label{fig:syn-cr-lc-traffic}
+    \end{subfigure}%
+   \caption{Each Application Router Local Channel Traffic.  }
+   \label{fig:syn-3app-lc-traffic}
+\end{figure*}
+
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/amg10/gc-traffic}
+        \caption{AMG Global Channel Traffic}
+        \label{fig:samg-gc-traffic}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/mg/gc-traffic}
+        \caption{MG Global Channel Traffic}
+        \label{fig:syn-mg-gc-traffic}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{syn-wkld/cr/gc-traffic}
+        \caption{CR Global Channel Traffic}
+        \label{fig:syn-cr-gc-traffic}
+    \end{subfigure}%
+   \caption{Each Application Router Global Channel Traffic.}
+   \label{fig:syn-3app-gc-traffic}
+\end{figure*}
+
+Based on the results we got from both real application traces and synthetic workload, we can make the following observations:
+
+\begin{itemize}
+    \item Random placement and adaptive routing can uniformly distribute workload traffic over the network, make the whole network load-balanced and hot-spot free. 
+    \item Random placement and adaptive routing can not guarantee QoS for each application in the workload. In order to reach load-balanced and hot-spot free, the traffic from congested routers will be redirected to other less busy routers. This will indulge the ``bully" that communication-intensive applications impose to their less intensive peers. 
+    \item Contiguous placement and minimal routing guarantee a consistent performance of each application. Although, contiguous placement and minimal routing usually results in local congestion and hot-spot, it can reduce the interference between concurrently running applications, thus prevent less communication-intensive application from being ``bully" by its intensive peers.
+\end{itemize}
+
+
+\section{Better Orchestration }
+According to our findings, we believe choosing the ideal placement and routing strategies for workload running on dragonfly network should be based on application's communication intensity. The less intensive applications should avoid sharing network resource with other applications, reduce the possible interference. Contiguous placement and adaptive routing can guarantee the QoS for the less intensive applications. 
+
+The communication-intensive applications tend to cause local congestion. Random placement and adaptive routing can ...
+ 
 
 \section{Related Work}
 \label{sec:related work}
