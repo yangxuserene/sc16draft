@@ -436,18 +436,13 @@ We choose three representative applications from DOE Design Forward Project\cite
 
  AMG: The Algebraic MultiGrid Solver, is a parallel algebraic multi-grid solver for linear systems arising from problems on unstructured mesh physics packages. It has been derived directly from the BoomerAMG solver that is being developed in the Center for Applied Scientific Computing (CASC) at LLNL\cite{amg}.
 
-% \begin{figure*}[t!]
-%   \centering
-%   \includegraphics[height=2.2in]{data_amount}
-%   \caption{Applications data transfer amount}
-%   \label{fig:3app-data-amount}
-% \end{figure*}
+
 
 MultiGrid: massively parallel block-structured adaptive mesh refinement (AMR) codes a software framework for massively parallel block-structured adaptive mesh refinement (AMR) codes\cite{boxlib}. It is widely used for structured grid physics packages.
 
 CrystalRouter: the extracted communication kernel of the full application Nek5000\cite{nek5000}, which is a spectral element CFD application developed at Argonne National Laboratory\cite{crystalrouter}. It features spectral element multi-grid solvers coupled with a highly scalable, parallel coarse-grid solver that is widely used for projects including ocean current modeling, thermal hydraulics of reactor cores,and spatiotemporal chaos.
 
-The amount of transferring data of each application are shown in Figure \ref{fig:3app-data-amount}.
+% The amount of transferring data of each application are shown in Figure \ref{fig:3app-data-amount}.
 
 \section{Dragonfly Network}
 \label{sec:network}
@@ -523,7 +518,7 @@ We make a workload that consists of these three applications and simulate the ru
    \label{fig:wkld-network-stime}
 \end{figure*}
 
-Figure \ref{fig:wkld-network-traffic} and Figure \ref{fig:global-channel-stime} shows that random job placement with adaptive routing can distribute workload traffic and balance the load over the network. Contiguous job placement 
+Figure \ref{fig:wkld-network-traffic} and Figure \ref{fig:wkld-network-stime} shows that random job placement with adaptive routing can distribute workload traffic and balance the load over the network. Contiguous job placement 
 
 \subsection{Application Analysis}
 \label{sec:app analysis}
@@ -534,20 +529,20 @@ The random job placement and adaptive routing can reach hot-spots free and load-
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{amg/commtime}
+        \includegraphics[height=1.5 in]{amg/commtime}
         \caption{AMG Communication Time}
         \label{fig:amg-commtime}
     \end{subfigure}%
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{mg/commtime}
+        \includegraphics[height=1.5 in]{mg/commtime}
         \caption{MG Communication Time}
         \label{fig:mg-commtime}
     \end{subfigure}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{cr/commtime}
+        \includegraphics[height=1.5 in]{cr/commtime}
         \caption{CR Communication Time}
         \label{fig:cr-commtime}
     \end{subfigure}%
@@ -559,34 +554,103 @@ Figure \ref{fig:apps-commtime} shows the communication time of three application
 
 The results of random placement shown in Figure \ref{fig:apps-commtime} are collected from extensive runs of different random placements, which can eliminate the possibility of variations.
 
-We look into network level to identify the major culprit behind AMG's abnormal behavior with random placement and adaptive routing. By identifying the terminal nodes and routers that each application's traffic go through, we can see that the traffic amount go through the routers that belongs to AMG is skyrocketing when it running with random placement and adaptive routing, shown in Figure \ref{fig:amg-router-traffic}. 
+We look into network level to identify the major culprit behind AMG's abnormal behavior with random placement and adaptive routing. By identifying the terminal nodes and routers that each application's traffic go through, we can see that the traffic amount go through the routers that belongs to AMG is skyrocketing when it running with random placement and adaptive routing, shown in Figure \ref{fig:amg-lc-traffic} and Figure \ref{fig:amg-gc-traffic}. Adaptive routing will redirect the traffic of other applications to go through the routers belongs to AMG, and increase the burden of those routers, thus slow down the communication of AMG. 
+
+CrystalRouter and MultiGrid can get obvious benefit from random placement and adaptive routing, as we can see from Figure \ref{fig:cr-gc-traffic} \ref{fig:cr-lc-traffic} and Figure \ref{fig:mg-gc-traffic} \ref{fig:mg-lc-traffic}, random placement and adaptive routing can redirect their traffic to other region of network, to avoid local congestion as appeared with contiguous and minimal routing. 
 
 \begin{figure*}[t!]
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{amg/tl-traffic}
-        \caption{Terminal Link Traffic}
-        \label{fig:amg-tl-traffic}
+        \includegraphics[height=1.8 in]{amg/lc-traffic}
+        \caption{AMG Local Channel Traffic}
+        \label{fig:amg-lc-traffic}
     \end{subfigure}%
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{amg/lc-traffic}
-        \caption{Local Channel Traffic}
-        \label{fig:amg-lc-traffic}
+        \includegraphics[height=1.8 in]{mg/lc-traffic}
+        \caption{MG Local Channel Traffic}
+        \label{fig:mg-lc-traffic}
     \end{subfigure}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{amg/gc-traffic}
-        \caption{Global Channel Traffic}
-        \label{fig:amg-gc-traffic}
+        \includegraphics[height=1.8 in]{cr/lc-traffic}
+        \caption{CR Local Channel Traffic}
+        \label{fig:cr-lc-traffic}
     \end{subfigure}%
-   \caption{AMG router traffic.}
-   \label{fig:amg-router-traffic}
+   \caption{Each Application Router Local Channel Traffic.  }
+   \label{fig:3app-lc-traffic}
 \end{figure*}
 
-Adaptive routing will redirect the traffic of other applications to go through the routers belongs to AMG, and increase the burden of those routers, thus slow down the communication of AMG. 
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{amg/gc-traffic}
+        \caption{AMG Global Channel Traffic}
+        \label{fig:amg-gc-traffic}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{mg/gc-traffic}
+        \caption{MG Global Channel Traffic}
+        \label{fig:mg-gc-traffic}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{cr/gc-traffic}
+        \caption{CR Global Channel Traffic}
+        \label{fig:cr-gc-traffic}
+    \end{subfigure}%
+   \caption{Each Application Router Global Channel Traffic.}
+   \label{fig:3app-gl-traffic}
+\end{figure*}
+
+
+Why AMG is the only victim in the workload? The reason for CrystalRouter and MultiGrid get improvement in the sacrifice of AMG's performance is that AMG is the lest communication-intensive application in the workload. As shown in Figure \ref{fig:3app-data-amount}, AMG has the least amount of data transfer between its ranks. 
+
+\begin{figure*}[t!]
+  \centering
+  \includegraphics[height=2.2in]{data_amount}
+  \caption{Applications Data Transfer Amount. AMG has the least amount of data transfer, compared with CR and MG.}
+  \label{fig:3app-data-amount}
+\end{figure*}
+
+Apparently, random placement and adaptive routing is quite efficient for orchestrate the traffic load in the network. Random placement and adaptive routing can uniformly distribute the workload traffic all over the network, make the load-balanced and avoid hot-spots. However, application like AMG will be impaired in this orchestration. The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications. Beneath the facade of harmony, less communication-intensive application are bullied by their communication-intensive peers in the workload. 
+
+
+\section{Analysis of Synthetic Workloads}
+
+To validate our assumption, we generate synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. 
+
+
+\begin{figure*}[t!]
+    \centering
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.5 in]{syn-wkld/amg10/commtime}
+        \caption{sAMG Communication Time}
+        \label{fig:amg-commtime}
+    \end{subfigure}%
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.5 in]{syn-wkld/mg/commtime}
+        \caption{MG Communication Time}
+        \label{fig:mg-commtime}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.5 in]{syn-wkld/cr/commtime}
+        \caption{CR Communication Time}
+        \label{fig:cr-commtime}
+    \end{subfigure}%
+   \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement and routing configurations. Random placement and adaptive routing can improves AMG's communication time. MG and CR communication time are prolonged with random placement and adaptive routing.}
+   \label{fig:apps-commtime}
+\end{figure*}
 
 
 \section{Related Work}
