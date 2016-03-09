@@ -441,9 +441,6 @@ A simulation toolkit named CODES enables the exploration of simulating different
 \subsection{Network Configuration}
 \label{sec: network config}
  
- 
-\TODO{xxx}
-\NOTE{yyy}
 Here will talk about network configuration, such as network scale, link bandwidth etc.\\
 
 
@@ -760,7 +757,12 @@ So the ideal placement and routing strategies for workload running on dragonfly 
 \section{Related Work}
 \label{sec:related work}
 
+The impact of job placement to both system and application always catch researchers appetite \cite{dskinner} \cite{abhinav-sc13} \cite{jose-ipdps15}. Skinner et al.\cite{dskinner} identified that network congestion could cause significant performance variability. Bhatele et al. \cite{abhinav-sc13} studied the performance variability of a specific application, p3FD, running on different production system. They noticed that the application performance would keep consistent when it got compact allocation and exclusive network resource. Jokanovic et al.\cite{jose-ipdps15} study the impact of job placement to the workload and claimed that the key to reduce performance variability is to avoid network sharing. 
 
+Recently, several researchers have investigated the job placement and routing schemes on dragonfly network. Bogdan et al \cite{hoefler-hpdc14} proposed novel solution for mapping tasks of application that conforms to Nearest Neighbor communication pattern on dragonfly network. Jain et al. \cite{jain-sc14} conducted a comprehensive analysis of various job placement and routing scheme with regard to network link throughput on dragonfly network. Their work is based on an analytical model and synthetic workload. Bhatele et al.\cite{bhatele-sc11} used simulation to study the performance of synthetic workload under the different task mapping and routing schemes on two-level direct networks.
+
+
+Our work different from the previous works in the following ways. First, instead of using synthetic workload that generated based on predefined communication patterns, our simulation is driven real application traces collected from production system. Second, not only we care about the workload performance, but also we pay attention to each individual application in the workload. We found that although random placement and adaptive routing can improve the workload performance, some specific application in the workload may suffer performance degradation. Third, with the sophisticated simulation tool CODES, we can get not only applications communication information, but also we have the insight about the network status when application is running. The traffic and busy time of router's each link are valuable information for detailed analysis.
 
 
 % An example of a floating figure using the graphicx package.
