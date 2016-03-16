@@ -386,72 +386,74 @@ The high-radix, low-diameter dragonfly topology network will be the choice of ma
 \section{Introduction}
 \label{sec:intro}
 
-The low latency and high bandwidth interconnect network plays a critical role in improving HPC system performance. As the computing ability continue grows due to many-core nodes with accelerators, the network is now becoming a scare resources. HPC community start to explore the possible alternative to replace the commonly used Torus network.
-
-The high-radix, low-diameter dragonfly topology can lower the cost of interconnect network, improve network bandwidth, reduce the packets traverse latency. This make the dragonfly network an very promising choice for building multi-Petaflop/s supercomputers\cite{dally-dragonfly}. The procurement results from Trinity and CORAL project shows the great performance improvement can be got from using dragonfly network. 
-
-
-Even with such powerful network, the interference between concurrently running jobs and thus presumably job placement remains an major factor cause performance variability on dragonfly network\cite{bhatele2015, dskinner}. Some research work suggest that random job placement coupled with adaptive routing can alleviate local congestion, eliminate hot-spots and reach load-balance for dragonfly networks \cite{jain-sc14, bhatele-sc11, brandt2014}. 
-
-This is paper, we study the interference between concurrently running jobs on dragonfly network with different job placement and routing schemes. Being unorthodox to most existing work that use synthetic workload, parallel scientific application traces that collected from production system are used in our study. The advantage of using real application traces is quite obvious, these traces can capture application's communication behavior in detail that usually omitted in synthetic workload for the purpose of simplicity. Applicatoins usually are distinctive from each other in terms of  data transfer amount, communication pattern, operation dependency etc. which are impossible to reproduce in synthetic workload.
+The low latency and high bandwidth interconnect network plays a critical role in improving HPC system performance. As the computing ability continue to grow due to many-core nodes with accelerators, the network is now becoming a scare resources. HPC community start to explore the new network topology to replace the commonly used torus-connected network. The high-radix, low-diameter dragonfly topology can lower the cost of interconnect network, improve network bandwidth, reduce the packets traverse latency \cite{dally-dragonfly}. This make the dragonfly network an very promising choice for building Petaflop and beyond supercomputers. 
+%The procurement results from Trinity and CORAL project shows the great performance improvement can be got from using dragonfly network. 
 
 
-%We also evaluate the network performance and jobs' performance when the Dragonfly network is configured with different job allocation strategies and routing algorithms. The job allocation strategies used in our study are Compact allocation and Random allocation, both of which can be seen in existing production HPC systems. The routing strategies been analyzed in this work are Minimal, Nonminimal and Adaptive.  
+While dragonfly topology provides low-latency and high-bandwidth interconnected network, how to efficiently utilize it is greatly relying on the upper level system software. In particular, intelligent job placement to avoid interference is of paramount importance for guarantee the performance of concurrently running jobs that sharing network resources \cite{bhatele2015, dskinner}. Some research work suggest that random job placement coupled with adaptive routing can alleviate local congestion, eliminate hot-spots and reach load-balance for dragonfly networks \cite{jain-sc14, bhatele-sc11, brandt2014}. 
 
 
-We made observation from our extensive study that, when dragonfly network is configured with random placement and adaptive routing scheme in order to reach hot-spots free and load balance, the performance of particular job(s) in the workload would suffer degradation. The communication intensive jobs in the workload can benefit from random placement and adaptive routing, with great performance improvement. Unfortunately, those less intensive jobs are the sacrifices for this improvement, their performance will be greatly reduced. We identify this phenomenon as ``bully" between concurrently running jobs.
+In this work, we study the interference between concurrently running jobs on dragonfly network with different job placement and routing schemes. We use CODES, a HPC network simulation toolkit with high fidelity, excellent scalability for packet level simulation \cite{codes}. And being unorthodox to most existing work that use synthetic workload, we use traces of three representative applications from DOE Design Forward Project \cite{designforwardwebpage}. The advantage of using real application traces is quite obvious, these traces can capture application's communication behavior in detail that usually omitted in synthetic workload for the purpose of simplicity. Applications usually are distinctive from each other in terms of data transfer amount, communication pattern, operation dependency etc. which are impossible to reproduce in synthetic workload.
 
-The findings in this work also reconfirm that interference between concurrently running jobs would make the performance of some jobs very unpredictable. The detailed analysis about the traffic and congestion in network level unveil the undercurrent beneath that interference. This work makes the following contributions:
+We conduct extensive experiments with three applications running on dragonfly network with two job placement schemes and three routing schemes. We analyze the applications' performance in terms of communication time when they running with different placement\& routing configuration. Our evaluation is based on more than 1000 runs of simulation. Through extensive simulation with application traces, we make several interesting observations. 
+
+
+%We made observation from our extensive study that, when dragonfly network is configured with random placement and adaptive routing scheme in order to reach hot-spots free and load balance, the performance of particular job(s) in the workload would suffer degradation. The communication intensive jobs in the workload can benefit from random placement and adaptive routing, with great performance improvement. Unfortunately, those less intensive jobs are the sacrifices for this improvement, their performance will be greatly reduced. We identify this phenomenon as ``bully" between concurrently running jobs.
 
 \begin{itemize}
    
-    \item Our real trace-based analysis about job interference on dragonfly network, shows that random placement with adaptive routing can not guarantee the performance of every job in the workload. The hot-spots free and load-balanced reached by using random placement with adaptive routing come with the cost of less communication-intensive jobs performance degradation. 
+    \item Random placement coupled with adaptive routing can not guarantee the performance of every job in the workload. The hot-spots free and load-balanced network status reached by using random placement with adaptive routing come with the cost of less communication-intensive jobs performance degradation. 
 
-    \item We identify the ``bully" behavior happening between concurrently running jobs on dragonfly network when random placement and adaptive routing in use. Random placement and adaptive routing redirect the traffic of communication intensive jobs to the routers through which less intensive jobs' traffic used to go, embezzle the network resource such as local and global channel bandwidth, slow down the communication of those less intensive jobs.
+    \item We identify the ``bully" behavior happening between concurrently running jobs on dragonfly network when random placement \& adaptive routing in use. Random placement \& adaptive routing redirect the traffic of communication intensive jobs to the routers through which less intensive jobs' traffic used to go, embezzle the network resource such as local and global channel bandwidth, slow down the communication of those less intensive jobs.
 
     
-    \item We found that contiguous placement and minimal routing can guarantee the consistent performance of each job running on dragonfly network, while may result in hot-spots and local network congestion. Actually, contiguous placement and minimal routing are preferred by communication-less-intensive jobs, since it will prevent them from being ``bullied" by other communication-intensive jobs.
+    \item We found that contiguous placement \& minimal routing can guarantee the consistent performance of each job running on dragonfly network, while may result in local network congestion and unbalanced network utilization. Contiguous placement \& minimal routing are preferred by less communication-intensive jobs, since it will prevent them from being ``bullied" by other communication-intensive jobs.
     
          
 \end{itemize}
 
-To the best of our knowledge, using parallel application traces from production system for the study of job interference on dragonfly network has not been reported so far. We believe the observations and analysis presented in this paper can be used by computing facilities to choose job placement and routing strategies wisely for their future dragonfly interconnected system. The conclusion from this paper would be useful for workload manager in dragonfly system to make better scheduling decisions for jobs with distinctive communication behavior.
+These observations also reconfirm that interference between concurrently running jobs would make the performance of some jobs very unpredictable. The detailed analysis about the traffic and congestion in network level unveil the undercurrent beneath that interference. 
+
+To the best of our knowledge, using parallel application traces from production systems for the study of job interference on dragonfly network has not been reported so far. We believe the observations and analysis presented in this paper are valuable to a number of communities including HPC computing facility, system software development, and system administration. The computing facility should choose the configuration for dragonfly network implementation with consideration about resource sharing between concurrently running jobs. The workload manager would come up with better scheduling algorithm for jobs with distinctive communication behavior. And the system administration would be more efficient with the knowledge about jobs running status under different placement and routing configuration.
+
+The rest of this paper is organized as follows. Section \ref{sec:background} describes the dragonfly network and the placement \& routing schemes. Section \ref{sec: methodology} talks about the use of CODES as research vehicle and three representative applications from DOE Design Forward Project. Section \ref{sec:workload-1} presents the analysis of three applications running on dragonfly network with different placement \& routing configuration. Section \ref{sec:workload-2} validates the observations we get in section \ref{sec:workload-1}. Section \ref{sec:related work} discusses related work. Finally, the conclusion is presented in Section \ref{sec:conclusion}.
 
 \section{Background}
 \label{sec:background}
-The dragonfly network is promising alternative for connecting a large number of nodes for its high-radix and low-diameter topology\cite{dally-dragonfly} \cite{kim-micro} \cite{faanes}. However, even with such powerful network, the job placement and routing could still be important factor that impact application's performance. 
 
+In this section, we talk about the Dragonfly topology and one of its implementation. We also present the placement and routing schemes  used on dragonfly network.
 
-\subsection{Dragonfly Network Overview}
+\subsection{Dragonfly Network}
 \label{sec:network}
 The dragonfly is a two-level hierarchical topology. It consists of several groups connected by All-to-All links. In each group, there could be ``a" number of routers connected via All-to-All local channels. For each router, there could be ``p" number of compute nodes attached to it via terminal links. The router has ``h" number of global channels that used as intergroup connections through which the router connected to other routers in different groups. Thus, the radix of each router is $k = a+h+p-1$. The implementation of such dragonfly network could be different between different computing facilities. The choosing of proper $a$, $h$, $p$ could be involving many factors, such as system scale, building cost and workload requirements. 
 
-For the purpose of loading balance, it is recommended that the proper dragonfly configuration should be like $a=2p=2h$\cite{kim-micro}. Under this configuration, the total number of groups ``g" in the dragonfly network would be $g = a*h+1 $, the total number of compute nodes ``N" in the network would be $N = p*a*g $. Figure \ref{fig:dragonfly overview} illustrated an implementation of dragonfly network follows such configuration. There are 6 routers in each group, each router has 3 compute nodes attached to it. This dragonfly implementation consists of 19 groups and 342 nodes in total.
+For the purpose of loading balance, it is recommended that the proper dragonfly configuration should be like $a=2p=2h$\cite{kim-micro}. Under this configuration, the total number of groups ``g" in the dragonfly network would be $g = a*h+1 $, the total number of compute nodes ``N" in the network would be $N = p*a*g $. Figure \ref{fig:dragonfly-overview} illustrated an implementation of dragonfly network follows such configuration. There are 6 routers in each group, each router has 3 compute nodes attached to it. This dragonfly implementation consists of 19 groups and 342 nodes in total.
 
 \begin{figure}[h!] 
   \centering
   \includegraphics[width=0.48\textwidth]{dragonfly-overview}
   \caption{Dragonfly Network Overview. Illustration of part of dragonfly network. There are 19 groups, 6 routers in each group, 3 compute nodes connected to each router, 342 nodes in total. Job\_1 requires for 6 nodes, get the allocation by Random placement. Job\_2 requires for 8 nodes, get the allocation by Contiguous placement. }
-  \label{fig:dragonfly overview}
+  \label{fig:dragonfly-overview}
 \end{figure}
 
 
-\subsection{Job Placement}
-\label{sec:placement-routing}
+\subsection{Job Placement on Dragonfly}
+\label{sec:placement-schemes}
 
-Job placement refers to the scheme used by batch scheduler to allocate the required number of nodes by each job for execution. As studied by several researchers, the job placement could be an important factor that impact application performance \cite{hoefler-hpdc14} \cite{bhatele-sc11} \cite{jain-sc14}. In this work, we study the following two placement schemes that are most likely to be deployed in the future dragonfly system.
+For a parallel application requiring multiple compute nodes, job placement refers to the process of assigning the tasks of the application onto the system by a system software such as batch scheduler \cite{xu-cluster14}. In this work, we study two well cited placement policies for dragonfly systems: 
 
-\textbf{Contiguous Placement:} In this scheme, the nodes will first be indexed consecutively in an increasing order of their group id and router id. The schedul assign each job required number of nodes by cutting chunks of nodes from the sequentially ordered list, as illustrated in Figure \ref{fig: dragonfly overview} as blue nodes assigned to job\_2. The nodes been allocated to the same job will be adjacent to each other, usually they are attached to the same router or in the same group, depends on the size of the job. Contiguous placement confines the traffic of application into the local area, which may result in local network congestion and increase the possibility of hot-spots. 
+%Job placement refers to the scheme used by batch scheduler to allocate the required number of nodes by each job for execution. As studied by several researchers, the job placement could be an important factor that impact application performance \cite{hoefler-hpdc14} \cite{bhatele-sc11} \cite{jain-sc14}. In this work, we study the following two placement schemes that are most likely to be deployed in the future dragonfly system.
 
-\textbf{Random Placement:} In this scheme, job will get a set of nodes that randomly selected from all the available nodes in the system. The nodes allocated to each job would be attached to different routers in different groups, as illustrated in Figure \ref{fig: dragonfly overview} the red nodes assigned to job\_1. Some routers may be shared by different applications when using random placement. Random placement can spreading the traffic of application uniformly across the whole system, thus avoid the possible local congestion and reach load balance.
+\textbf{Contiguous Placement:} In this scheme, the nodes will first be indexed consecutively in an increasing order of their group id and router id. The schedul assign each job required number of nodes by cutting chunks of nodes from the sequentially ordered list, as illustrated in Figure \ref{fig:dragonfly-overview} as blue nodes assigned to job\_2. The nodes been allocated to the same job will be adjacent to each other, usually they are attached to the same router or in the same group, depends on the size of the job. Contiguous placement confines the traffic of application into the local area, which may result in local network congestion and increase the possibility of hot-spots. 
+
+\textbf{Random Placement:} In this scheme, job will get a set of nodes that randomly selected from all the available nodes in the system. The nodes allocated to each job would be attached to different routers in different groups, as illustrated in Figure \ref{fig:dragonfly-overview} the red nodes assigned to job\_1. Some routers may be shared by different applications when using random placement. Random placement can spreading the traffic of application uniformly across the whole system, thus avoid the possible local congestion and reach load balance.
 
 
-\subsection{Routing Schemes}
-\label{sec:routing}
+\subsection{Routing on Dragonfly}
+\label{sec:routing-schemes}
+The routing scheme refers to the strategy adopted to route messages from the source router to the destination router. The well studied routing schemes for dragonfly network include minimal routing, adaptive routing \cite{dally-dragonfly}, and progressive adaptive routing\cite{jiang}, and some of their variations \cite{won-prog-adaptive}. In this work we study three widely adopted routing mechanisms in dragonfly systems
 
-The implemented routing schemes in CODES dragonfly network model are based on the routing algorithm proposed by Kim et al. \cite{dally-dragonfly} and Jiang et al. \cite{jiang}. Three routing schemes are studied in this work are \emph{Minimal}, \emph{Adaptive} and \emph{Progressive Adaptive}.
-
-\textbf{Minimal:} When the network deploy minimal routing, a message from source router will take the the shortest path to the destination router. When there are multiple shortest paths between the rource and destination router, the message will be evenly divided among the paths. Minimal routing can guarantee the minimum hops the message takes from source to destination. However, it may result in congestion along the shortest path. 
+\textbf{Minimal:} When the network deploy minimal routing, a message from source router will take the the shortest path to the destination router. When there are multiple shortest paths between the source and destination router, the message will be evenly divided among the paths. Minimal routing can guarantee the minimum hops the message takes from source to destination. However, it may result in congestion along the shortest path. 
 
 
 \textbf{Adaptive:} In this scheme, the path a message takes will be adaptively chosen between shortest and non-shortest path, depends on the congestion situation along that path. For the non-shortest path, an intermediate router will be randomly chosen. The message will first take the shortest path from source to that intermediate router, then it will take the shortest path from that intermediate router to the destination. Since adaptive scheme chooses routing path adaptively based on the congestion situation, it can void local congestion and reduce the possibility of hot-spots. 
@@ -463,28 +465,29 @@ The implemented routing schemes in CODES dragonfly network model are based on th
 \section{Methodology}
 \label{sec: methodology}
 
-It is difficult to do experiment with concurrently running jobs on HPC system. One reason is that job placement and routing strategy are part of system configuration, it is impossible for user to make changes at will. Another reason is that it is unrealistic to reserve the system exclusively to run the same batch of jobs with desired placement and routing configurations and compare the results. Therefore, we resort to simulation in our work.
+It is difficult to do experiment with concurrently running jobs on HPC system. One reason is that job placement and routing strategy are part of system configuration, it is impossible for user to make changes at will. Another reason is that it is unrealistic to reserve the system exclusively to run the same batch of jobs with desired placement and routing configurations and compare the results. Therefore, we resort to simulation in our work. 
 
 \subsection{Simulation Tool}
-A simulation toolkit named CODES, Co-Design of Multilayer Exascale Storage Architectures, enables the exploration of simulating different HPC networks with high fidelity and great scalability\cite{codes}.  CODES supports dragonfly network with packet-level high-fidelity simulation\cite{codes-dragonfly}. It has this network workload component that is capable of taking real MPI application traces generated by SST DUMPI\cite{sst} for trace-driven simulations.
+\label{sec:simulation-tool}
+A simulation toolkit named CODES, Co-Design of Multilayer Exascale Storage Architectures, enables the exploration of simulating different HPC networks with high fidelity and great scalability \cite{codes}. CODES supports dragonfly network with packet-level high-fidelity simulation\cite{codes-dragonfly} \cite{misbah-tpds}. It can take real MPI application traces generated by SST DUMPI\cite{sst} to drive CODES network model. In this work, we focus on an in-depth analysis of interference  with different job placement \& routing schemes on dragonfly network.
 
-\subsection{Application Traces}
+\subsection{Parallel Applications}
 \label{sec: application traces}
 
 We choose three representative parallel applications from DOE Design Forward Project\cite{designforwardwebpage}. We believe these applications can be representative of a wide array of applications running on leadership-class supercomputers. Specifically, we study the Algebraic MultiGrid Solver (AMG), Geometric MultiGrid (MultiGrid) and CrystalRouter MiniApps. 
 
-AMG: The Algebraic MultiGrid Solver, is a parallel algebraic multi-grid solver for linear systems arising from problems on unstructured mesh physics packages. It has been derived directly from the BoomerAMG solver that is being developed in the Center for Applied Scientific Computing (CASC) at LLNL\cite{amg}. 
+\textbf{AMG:} The Algebraic MultiGrid Solver, is a parallel algebraic multi-grid solver for linear systems arising from problems on unstructured mesh physics packages. It has been derived directly from the BoomerAMG solver that is being developed in the Center for Applied Scientific Computing (CASC) at LLNL\cite{amg}. 
 % The traces of AMG we chosen are comprised of 216 MPI ranks.
 
-MultiGrid:  geometric multi-grid v-cycle from the production elliptic solver BoxLib, a software framework for massively parallel block-structured adaptive mesh refinement (AMR) codes\cite{boxlib}. It is widely used for structured grid physics packages. 
+\textbf{MultiGrid:}  geometric multi-grid v-cycle from the production elliptic solver BoxLib, a software framework for massively parallel block-structured adaptive mesh refinement (AMR) codes\cite{boxlib}. It is widely used for structured grid physics packages. 
 % The traces of MultiGrid we chosen are comprised of 125 MPI ranks.
 
-CrystalRouter: the extracted communication kernel of the full application Nek5000\cite{nek5000}, which is a spectral element CFD application developed at Argonne National Laboratory\cite{crystalrouter}. It features spectral element multi-grid solvers coupled with a highly scalable, parallel coarse-grid solver that is widely used for projects including ocean current modeling, thermal hydraulics of reactor cores,and spatiotemporal chaos. 
+\textbf{CrystalRouter:} the extracted communication kernel of the full application Nek5000\cite{nek5000}, which is a spectral element CFD application developed at Argonne National Laboratory\cite{crystalrouter}. It features spectral element multi-grid solvers coupled with a highly scalable, parallel coarse-grid solver that is widely used for projects including ocean current modeling, thermal hydraulics of reactor cores,and spatiotemporal chaos. 
 % The traces of CrystalRouter we chosen are comprised of 100 MPI ranks.
 
 
 
-\subsection{Simulation Configuration}
+\subsection{System Configuration}
 \label{sec: simulation configuration}
 
 
@@ -512,21 +515,23 @@ Random  &   RM  &   RA   &  RPA   \\
 
 The dragonfly network studied in this work consists of 33 groups, each group contains 8 routers and each router has 4 compute nodes attached to it. Overall, there are 264 routers and 1056 compute nodes in the network. The bandwidth of both terminal links and local channel are set to 2GB/s, the global channel bandwidth is set to 4GB/s. 
 
-We focus on the study of two placement schemes and three routing schemes, so there will be 6 different placement\&routing configurations, as listed in Table \ref{tab: placement routing configs}. In this work, we enable the applications running on dragonfly network under different placement and routing configurations, and scrutinize the application's performance and network behavior in different running scenarios. 
-
-In our experiments, the workload running on the dragonfly network under 6 different placement and routing configurations as listed in Table \ref{tab: placement routing configs}. We focus on the analysis of network status while the workload is running, as well as the performance of each individual application. We collected the following result data from the experiments:
+In this work we simulate and analyze six combinations of placement policies and routing schemes, which are summarized in Table ref{tab: placement routing configs}. Our analysis focuses on both overall network workload and individual application performance. For overall workload analysis, we focus on the time spent on communication by the workload, the network traffic throughput and busy time of links and channels. For individual application analysis, we study the time spent on communication by each MPI rank, traffic and busy time of each router that belongs to specific application. In our experiments, we collect and analyze the following data: 
 
 \begin{itemize}
     \item router terminal link traffic and busy time.
     \item router local channel traffic and busy time.
     \item router global channel traffic and busy time.
-    \item The time spend on communication for each MPI rank. 
+    \item communication time spent by each MPI rank. 
 \end{itemize}
 
-The results of random placement shown in the following experiments are collected from extensive runs of different random placements, which can eliminate the possibility of variation.
+With respect to random placement, we conduct a number of random runs, which are used to eliminate the possibility of variation.
 
-\section{Parallel Workload \Rmnum{1 }}
-\label{sec: workload 1 overview}
+%\subsection{Workload Combinations}
+%\label{sec:workload-combination}%%We come up with two parallel workloads. The first workload consists of the original application traces described in Section \ref{sec: application traces}, while the second workload is a modified version of the first workload for the purpose of validation. 
+
+
+\section{Study of Parallel Workload \Rmnum{1 }}
+\label{sec:workload-1}
 
 The first parallel workload analyzed in our experiment consists of three applications presented in section\ref{sec: application traces}. The details of this workload shown in Table \ref{tab: parallel workload-1}.
 
@@ -754,11 +759,20 @@ MultiGrid and CrystalRouter are more communication intensive compared with AMG. 
 
 So far we know that the reason for AMG being the only victim from random placement \& adaptive routing is due to its relatively small amount of data transfer, that make it the least communication-intensive application in the workload.
 
-From the detailed analysis of three applications performance above, we know that random placement \& adaptive routing is quite efficient for orchestrate the traffic load in the network. Random placement \& adaptive routing can uniformly distribute the workload traffic all over the network, make the load-balanced and avoid hot-spots. However, application like AMG will be impaired in this orchestration. The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications. Beneath the facade of harmony, less communication-intensive application are ``bullied" by their concurrently running communication-intensive peers in the workload. 
+\subsection{Key Findings}
+We can get the following key findings from the detailed analysis of three applications. 
+
+\emph{Random placement \& adaptive routing is quite efficient for orchestrate the traffic load in the network by uniformly distributing the workload traffic all over the network. However, application like AMG will be impaired in this orchestration. The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications. Beneath the facade of harmony, less communication-intensive application are ``bullied" by their concurrently running communication-intensive peers in the workload. }
+
+\emph{Random placement \& adaptive routing can not guarantee QoS for each application in the workload. In order to reach load-balanced and hot-spots free, the traffic from congested routers will be redirected to other less busy routers. This will indulge the ``bully" that communication-intensive applications impose to their less intensive peers.}
+
+\emph{Contiguous placement \& minimal routing guarantee a consistent performance of each application. Although, contiguous placement and minimal routing usually results in local congestion and unbalanced network utilization, it can reduce the interference between concurrently running applications, thus prevent less communication-intensive application from being ``bullied" by its communication-intensive peers.}
 
 We have tried three different congestion sensing schemes that used in adaptive routing\cite{won-prog-adaptive}, although there are some variations between the results, none of the congestion sensing scheme can prevent the ``bully" from happening.
 
 \section{Parallel Workload \Rmnum{2 }}
+\label{sec:workload-2}
+
 
 \begin{table}[ht]
 \begin{center}
@@ -956,22 +970,31 @@ CrystalRouter has more traffic than MultiGrid. The random placement won't redire
 
 
 
-\section{Summary}
+\subsection{Key Finding}
+Our study with synthetic workload confirms that the ``bully" behavior among concurrently running applications would happen when two conditions are satisfied.
 
-Based on the results we got from both real application traces and synthetic workload, we can make the following observations:
+\emph{First, the placement \& routing configuration allows network resource sharing between concurrently running applications. Random placement enables the router sharing and adaptive routing enables local and global channel sharing.}
 
-\begin{itemize}
-    \item Random placement and adaptive routing can uniformly distribute workload traffic over the network, make the whole network load-balanced and hot-spots free. 
-    \item Random placement and adaptive routing can not guarantee QoS for each application in the workload. In order to reach load-balanced and hot-spots free, the traffic from congested routers will be redirected to other less busy routers. This will indulge the ``bully" that communication-intensive applications impose to their less intensive peers. 
-    \item Contiguous placement and minimal routing guarantee a consistent performance of each application. Although, contiguous placement and minimal routing usually results in local congestion and unbalanced network utilization, it can reduce the interference between concurrently running applications, thus prevent less communication-intensive application from being ``bullied" by its communication-intensive peers.
-\end{itemize}
+\emph{Second, there are variance in terms of communication intensity between concurrently running applications. In workload \Rmnum{1}, AMG has the least amount of communication traffic compared with MultiGrid and CrystalRouter and it become the ``bullee". In workload \Rmnum{2}, sAMG has the most amount of communication traffic, which makes it the ``bully". }
+
+We can stop this ``bully" by making either one of these conditions invalid. 
 
 
-We believe choosing the ideal placement and routing strategies for workload running on dragonfly network should be based on application's communication intensity. The less intensive applications should avoid sharing network resource with other applications, reduce the possible interference. Contiguous placement and adaptive routing can guarantee the QoS for the less intensive applications, thus prevent the ``bully" from happening. 
+%\section{Summary}
+%Based on the results we got from both real application traces and synthetic workload, we can make the following observations:
+%
+%\begin{itemize}
+%    \item Random placement and adaptive routing can uniformly distribute workload traffic over the network, make the whole network load-balanced and hot-spots free. 
+%    \item Random placement and adaptive routing can not guarantee QoS for each application in the workload. In order to reach load-balanced and hot-spots free, the traffic from congested routers will be redirected to other less busy routers. This will indulge the ``bully" that communication-intensive applications impose to their less intensive peers. 
+%    \item Contiguous placement and minimal routing guarantee a consistent performance of each application. Although, contiguous placement and minimal routing usually results in local congestion and unbalanced network utilization, it can reduce the interference between concurrently running applications, thus prevent less communication-intensive application from being ``bullied" by its communication-intensive peers.
+%\end{itemize}
 
-The communication-intensive applications tend to cause local congestion. It is preferable to enable communication-intensive applications to have extra network resource by sharing with other applications.  Random placement and adaptive routing can alleviate the local congestion by redirecting traffic to other less busy routers in the network. 
 
-So the ideal placement and routing strategies for workload running on dragonfly network should be like this. The communication-intensive applications should be randomly allocated over the system and adaptive routing should be used by these applications to alleviate the local congestion. On the other hand, less intensive application should get contiguous allocation, minimal routing should be used by these applications to avoid network sharing and reduce interference. 
+%We believe choosing the ideal placement and routing strategies for workload running on dragonfly network should be based on application's communication intensity. The less intensive applications should avoid sharing network resource with other applications, reduce the possible interference. Contiguous placement and adaptive routing can guarantee the QoS for the less intensive applications, thus prevent the ``bully" from happening. 
+
+%The communication-intensive applications tend to cause local congestion. It is preferable to enable communication-intensive applications to have extra network resource by sharing with other applications.  Random placement and adaptive routing can alleviate the local congestion by redirecting traffic to other less busy routers in the network. 
+
+%So the ideal placement and routing strategies for workload running on dragonfly network should be like this. The communication-intensive applications should be randomly allocated over the system and adaptive routing should be used by these applications to alleviate the local congestion. On the other hand, less intensive application should get contiguous allocation, minimal routing should be used by these applications to avoid network sharing and reduce interference. 
  
 
 
@@ -1022,11 +1045,11 @@ The work at Illinois Institute of Technology is supported in part by U.S. Nation
 \bibliography{./reference}  
 
 
-% \vspace{5\baselineskip}
-% 
-% \begin{framed}
-% The submitted manuscript has been created by UChicago Argonne, LLC, Operator of Argonne National Laboratory ("Argonne").  Argonne, a U.S. Department of Energy Office of Science laboratory, is operated under Contract No. DE-AC02-06CH11357.  The U.S. Government retains for itself, and others acting on its behalf, a paid-up nonexclusive, irrevocable worldwide license in said article to reproduce, prepare derivative works, distribute copies to the public, and perform publicly and display publicly, by or on behalf of the Government.
-% \end{framed}
+ \vspace{5\baselineskip}
+ 
+ \begin{framed}
+ The submitted manuscript has been created by UChicago Argonne, LLC, Operator of Argonne National Laboratory ("Argonne").  Argonne, a U.S. Department of Energy Office of Science laboratory, is operated under Contract No. DE-AC02-06CH11357.  The U.S. Government retains for itself, and others acting on its behalf, a paid-up nonexclusive, irrevocable worldwide license in said article to reproduce, prepare derivative works, distribute copies to the public, and perform publicly and display publicly, by or on behalf of the Government.
+ \end{framed}
 
 
 
