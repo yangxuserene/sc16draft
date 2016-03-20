@@ -991,11 +991,6 @@ We can stop this ``bully" by making both conditions invalid.
 
 The solution for preventing this ``bully" behavior is to avoid network sharing between concurrently running jobs. Using contiguous placement\& minimal routing could be a way avoid network sharing, but both the workload and network performance could suffer degradation due to local congestion. It is also unrealistic to use different routing scheme for each application with regard to its communication intensity, since routing scheme is pre-configured in the system and can not be changed on the fly. However, the job placement can be versatile to assign different allocation (contiguous or random) to specific application.
 
-Thus, we propose the hybrid placement as a reconcile solution. In the hybrid placement, the less communication-intensive application will get contiguous allocation while the communication-intensive ones will get random allocation. We evaluate the performance of hybrid placement\&routing configurations with parallel Workload \Rmnum{1}. AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocation.
-
-
-Figure \ref{fig:hyb-plcmt-apps-commtime} shows each application communication time when hybrid placement coupled with different routing, together with other configurations. As we see from Figure \ref{fig:hyb-plcmt-amg-commtime}, 
-
 \begin{figure*}[t!]
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
@@ -1017,9 +1012,17 @@ Figure \ref{fig:hyb-plcmt-apps-commtime} shows each application communication ti
         \caption{CR Communication Time}
         \label{fig:hyb-plcmt-cr-commtime}
     \end{subfigure}%
-   \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement\& routing configurations. }
+   \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement\& routing configurations. \textbf{HM, HA, HPA} denote hybrid placement coupled with minimal, adaptive and progressive adaptive routing respectively. }
    \label{fig:hyb-plcmt-apps-commtime}
 \end{figure*}
+
+Thus, we propose the hybrid placement as a reconcile solution. In the hybrid placement, the less communication-intensive application will get contiguous allocation while the communication-intensive ones will get random allocation. We evaluate the performance of hybrid placement\&routing configurations with parallel Workload \Rmnum{1}. AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocation. Figure \ref{fig:hyb-plcmt-apps-commtime} shows each application communication time when hybrid placement coupled with different routing schemes, together with other configurations. 
+
+MultiGrid and CrystalRouter have basically the same performance with hybrid placement compared against random placement. Since they get random allocation in the hybrid placement scheme. AMG being improved a lot when hybrid placement in use. Compared with ``RA" and ``RPA", ``HA" and ``HPA" can significantly reduce AMG communication time, shown in Figure \ref{fig:hyb-plcmt-amg-commtime}. This is due the contiguous allocation AMG gets in the hybrid placement scheme. AMG doesn't share router with other applications. However, when (progressive) adaptive routing are in use, the traffic from MultiGrid and CrystalRouter is still being redirected to the groups where AMG resides. Since AMG is less communication-intensive and can not fully utilize network bandwidth, it is likely that the intermediate routers pick for the traffic from MultiGrid and CrystalRouter are from AMG's group. 
+
+
+
+
 
 %\section{Summary}
 %Based on the results we got from both real application traces and synthetic workload, we can make the following observations:
@@ -1086,7 +1089,7 @@ The work at Illinois Institute of Technology is supported in part by U.S. Nation
 \bibliography{./reference}  
 
 
- \vspace{5\baselineskip}
+ \vspace{1\baselineskip}
  
  \begin{framed}
  The submitted manuscript has been created by UChicago Argonne, LLC, Operator of Argonne National Laboratory ("Argonne").  Argonne, a U.S. Department of Energy Office of Science laboratory, is operated under Contract No. DE-AC02-06CH11357.  The U.S. Government retains for itself, and others acting on its behalf, a paid-up nonexclusive, irrevocable worldwide license in said article to reproduce, prepare derivative works, distribute copies to the public, and perform publicly and display publicly, by or on behalf of the Government.
