@@ -579,7 +579,7 @@ sAMG  &    216 &   60MB   &     13000MB\\ % Content row 1
 %\section{Identify the ``Bully"}
 \label{sec:workload-1}
 
-We study the network behavior as well as application interference under different placement and routing configurations from two perspectives. First, we analyze the network performance in terms of workload communication time. Then, we isolate each application from the workload, and analyze the interference by scrutinizing the traffic go through the routers that serving each application.
+We study the network behavior as well as application interference from two perspectives. First, we analyze the network performance when Workload \Rmnum{1 } is running under different placement and routing configurations. Then, we isolate each application from the workload, and analyze the interference by scrutinizing the traffic go through the routers that serving each application. These analysis allow us to identify the ``bully" in the workload.
 
 
 % \begin{figure}[h!]
@@ -594,6 +594,7 @@ We study the network behavior as well as application interference under differen
 
 
 \subsection{Network Performance Analysis}
+\label{sec: workload-1 network analysis}
 %  
 % \begin{figure}[h!]
 %   \centering
@@ -702,6 +703,7 @@ Figure \ref{fig:terminal-link-traffic} is for the purpose of symmetry, it shows 
 
 
 \subsection{Individual Application Analysis}
+\label{sec: workload-1 app analysis}
 
 \begin{figure*}[t!]
     \centering
@@ -793,25 +795,25 @@ MultiGrid and CrystalRouter are more communication-intensive compared with AMG. 
 
 So far we know that the reason for AMG being the only victim from random placement \& adaptive routing is due to its relatively small amount of data transfer, that make it the least communication-intensive application in the workload.
 
-\subsection{Key Findings}
-We can get the following key findings from the detailed analysis of three applications. 
+\subsection{Key Observations}
+In summary, based on the results presented in section \ref{sec: workload-1 network analysis}  and \ref{sec: workload-1 app analysis}, we have made the following observations.
 
-\emph{Random placement \& adaptive routing is quite efficient for orchestrating the traffic load in the network by uniformly distributing the workload traffic all over the network. However, application like AMG will be impaired in this orchestration. Beneath the facade of harmony, less communication-intensive application are ``bullied" by their concurrently running communication-intensive peers in the workload. }
 
-% The routers through which the less communication-intensive application traffic used to route, now have more traffic go through them. These extra traffic are from other communication-intensive applications.
+\emph{Network performance will be significantly improved when random placement and adaptive routing are in use.} Random placement can uniformly distribute MPI ranks of application over the network, and adaptive routing can redirect the traffic from congested routers to other less busy routers. Therefore, the network could reach load-balance and hot-spots. 
 
-\emph{Random placement \& adaptive routing can not guarantee the qualify of service for each application in the workload. In order to reach load-balanced and hot-spots free over the whole network, the traffic from congested routers will be redirected to other less busy routers. This will indulge the ``bully" that communication-intensive applications impose to their less intensive peers.}
+\emph{The performance of less communication-intensive jobs in workload will suffer degradation when network is configured with random placement and adaptive routing.}\NOTE{footnote} AMG in Workload \Rmnum{1} are ``bullied" by their concurrently running communication-intensive peers, MultiGrid and CrystalRouter. AMG shares routers and groups with MultiGrid and CrystalRouter when random placement is in use. The traffic from MultiGrid and CrystalRouter will be redirected to the routers that serving AMG, slow down AMG's communication. 
 
-\emph{Contiguous placement \& minimal routing guarantee a consistent performance of each application. Although, contiguous placement and minimal routing usually results in local congestion and unbalanced network utilization, it can reduce the interference between concurrently running applications, thus prevent less communication-intensive application from being ``bullied" by its communication-intensive peers.}
+\emph{Consistent performance of each application can be guaranteed when network is configured with contiguous placement and minimal routing.} The router and group sharing between jobs are prohibited in contiguous placement policy. The traffic won't be redirected from over-loaded routers to less busy ones when minimal routing is in use. Thus the interference between concurrently running jobs will be eliminated and the ``bully" behavior will be terminated. However, contiguous placement and minimal routing usually results in local congestion and unbalanced network utilization.
 
-We have tried three different congestion sensing schemes that used in adaptive routing\cite{won-prog-adaptive}, although there are some variations between the results, none of the congestion sensing scheme can prevent the ``bully" from happening.
+\TODO{make this paragraph into footnote} We have tried three different congestion sensing schemes that used in adaptive routing\cite{won-prog-adaptive}, although there are some variations between the results, none of the congestion sensing scheme can prevent the ``bully" from happening.
 
-% \section{Parallel Workload \Rmnum{2 }}
-\section{``Bully" become ``Bullee"}
+\section{Study of Parallel Workload \Rmnum{2 }}
+%\section{``Bully" become ``Bullee"}
 \label{sec:workload-2}
 
+In this section, we will verify the observations made in the previous section by experimenting with Workload \Rmnum{1 } running on our dragonfly network under different placement and routing configurations. By generating a synthetic application, we turn a ``bully" into a ``bullee". 
 
-In order to prove that AMG being bullied only because it is less communication-intensive than its concurrently running peers, we generate a synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. We run the new workload that consists of sAMG, MultiGrid and CrystalRouter on the same dragonfly network with the same placement \& routing configurations. As shown in Table \ref{tab:apps-detail}, sAMG become the most communication-intensive application in the new workload. 
+The synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. We run the Workload \Rmnum{2 } that consists of sAMG, MultiGrid and CrystalRouter on the same dragonfly network with different placement and routing configurations. As shown in Table \ref{tab:apps-detail}, sAMG become the most communication-intensive application in Workload \Rmnum{2 }. 
 
 \subsection{Network Performance Analysis}
 
@@ -979,7 +981,7 @@ CrystalRouter has more traffic than MultiGrid. The random placement won't redire
 \end{figure*}
 
 
-\subsection{Key Finding}
+\subsection{Key Observations}
 Our study with synthetic workload confirms that the ``bully" behavior among concurrently running applications would happen when two conditions are satisfied.
 
 \emph{First, the placement \& routing configuration allows network resource sharing between concurrently running applications. Random placement enables the router sharing and adaptive routing enables local and global channel sharing.}
