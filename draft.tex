@@ -796,7 +796,7 @@ MultiGrid and CrystalRouter are more communication-intensive compared with AMG. 
 So far we know that the reason for AMG being the only victim from random placement \& adaptive routing is due to its relatively small amount of data transfer, that make it the least communication-intensive application in the workload.
 
 \subsection{Key Observations}
-In summary, based on the results presented in section \ref{sec: workload-1 network analysis}  and \ref{sec: workload-1 app analysis}, we have made the following observations.
+In summary, based on the results presented in section \ref{sec: workload-1 network analysis} and \ref{sec: workload-1 app analysis}, we have made the following observations.
 
 
 \emph{Network performance will be significantly improved when random placement and adaptive routing are in use.} Random placement can uniformly distribute MPI ranks of application over the network, and adaptive routing can redirect the traffic from congested routers to other less busy routers. Therefore, the network could reach load-balance and hot-spots. 
@@ -811,12 +811,12 @@ In summary, based on the results presented in section \ref{sec: workload-1 netwo
 %\section{``Bully" become ``Bullee"}
 \label{sec:workload-2}
 
-In this section, we will verify the observations made in the previous section by experimenting with Workload \Rmnum{1 } running on our dragonfly network under different placement and routing configurations. By generating a synthetic application, we turn a ``bully" into a ``bullee". 
+In this section, we will verify the observations made in the previous section by experimenting with Workload \Rmnum{1 } running on dragonfly network under different placement and routing configurations. By generating a synthetic application, we turn the ``bully" into ``bullee". 
 
 The synthetic application, sAMG, which are same the with AMG's original traces in every aspect expect that the data transfer amount 100x greater than AMG. We run the Workload \Rmnum{2 } that consists of sAMG, MultiGrid and CrystalRouter on the same dragonfly network with different placement and routing configurations. As shown in Table \ref{tab:apps-detail}, sAMG become the most communication-intensive application in Workload \Rmnum{2 }. 
 
 \subsection{Network Performance Analysis}
-
+\label{sec: workload-2 network analysis}
 
 \begin{table}[ht]
 \begin{center}
@@ -894,6 +894,7 @@ Figure \ref{fig:synwkld-network-traffic-stime} show the network status when Work
 \end{figure*}
 
 \subsection{Individual Application Analysis}
+\label{sec: workload-2 app analysis}
 
 The communication time of each application shown in Figure \ref{fig:syn-apps-commtime}. The ``bully" become the ``bullyee". The less communication-intensive applications in Workload \Rmnum{2} are  MultiGrid and CrystalRouter.  When random placement coupled with (progressive) adaptive routing is used, MultiGrid and CrystalRouter suffer prolonged communication time, shown in Figure \ref{fig:syn-mg-commtime}, \ref{fig:syn-cr-commtime}. sAMG on the other hand benefit from random placement, shown in Figure \ref{fig:syn-samg-commtime}. 
 
@@ -982,18 +983,22 @@ CrystalRouter has more traffic than MultiGrid. The random placement won't redire
 
 
 \subsection{Key Observations}
-Our study with synthetic workload confirms that the ``bully" behavior among concurrently running applications would happen when two conditions are satisfied.
 
-\emph{First, the placement \& routing configuration allows network resource sharing between concurrently running applications. Random placement enables the router sharing and adaptive routing enables local and global channel sharing.}
+In summary, based on the results presented in section \ref{sec: workload-2 network analysis} and \ref{sec: workload-2 app analysis}, we have made the following observations.
 
-\emph{Second, there are difference in terms of communication intensity between concurrently running applications. In workload \Rmnum{1}, AMG has the least amount of communication traffic compared with MultiGrid and CrystalRouter and it become the ``bullee". In workload \Rmnum{2}, sAMG has the most amount of communication traffic, which makes it the ``bully". }
+%Our study with synthetic workload confirms that the ``bully" behavior among concurrently running applications would happen when two conditions are satisfied.
 
-We can stop this ``bully" by making both conditions invalid. 
+%\emph{First, the placement \& routing configuration allows network resource sharing between concurrently running applications. Random placement enables the router sharing and adaptive routing enables local and global channel sharing.}
+
+\emph{The application becomes ``bully" only because it has more amount of data transfer compared with its concurrently running peers.} ``Bully" application takes advantage of the network resource belonging to other applications when network sharing is enabled in random placement and adaptive routing policy. 
 
 
-\section{Stop the ``Bully"}
+\emph{The communication-intensive is a relative metric between concurrently running jobs.} MultiGrid and CrystalRouter are the ``bully" in Workload \Rmnum{1} and they become the ``bullee" when running concurrently with sAMG in Workload \Rmnum{2}.
 
-The solution for preventing this ``bully" behavior is to avoid network sharing between concurrently running jobs. Using contiguous placement\& minimal routing could be a way avoid network sharing, but both the workload and network performance could suffer degradation due to local congestion. It is also unrealistic to use different routing scheme for each application with regard to its communication intensity, since routing scheme is pre-configured in the system and can not be changed on the fly. However, the job placement can be versatile to assign different allocation (contiguous or random) to specific application.
+
+\section{Hybrid Job Placement}
+
+The solution for preventing this ``bully" behavior is to avoid network sharing between concurrently running jobs. Using contiguous placement and minimal routing could be a way to avoid network sharing, but both the workload and network performance could suffer degradation due to local congestion. It is also unrealistic to use different routing scheme for each application with regard to its communication intensity, since routing scheme is pre-configured in the system and can not be changed on the fly. However, the job placement can be versatile to assign different allocation (contiguous or random) to specific application.
 
 \begin{figure*}[t!]
     \centering
@@ -1016,11 +1021,11 @@ The solution for preventing this ``bully" behavior is to avoid network sharing b
         \caption{CR Communication Time}
         \label{fig:hyb-plcmt-cr-commtime}
     \end{subfigure}%
-   \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement\& routing configurations. \textbf{HM, HA, HPA} denote hybrid placement coupled with minimal, adaptive and progressive adaptive routing respectively. }
+   \caption{Application communication time. Three applications running concurrently on dragonfly network with different placement and routing configurations. \textbf{HM, HA, HPA} denote hybrid placement coupled with minimal, adaptive and progressive adaptive routing respectively. }
    \label{fig:hyb-plcmt-apps-commtime}
 \end{figure*}
 
-Thus, we propose the hybrid placement as a reconcile solution. In the hybrid placement, the less communication-intensive application will get contiguous allocation while the communication-intensive ones will get random allocation. We evaluate the performance of hybrid placement\&routing configurations with parallel Workload \Rmnum{1}. AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocation. Figure \ref{fig:hyb-plcmt-apps-commtime} shows each application communication time when hybrid placement coupled with different routing schemes, together with other configurations. 
+Thus, we propose the hybrid placement as a reconcile solution. In the hybrid placement, the less communication-intensive application will get contiguous allocation while the communication-intensive ones will get random allocation. We evaluate the performance of hybrid placement and routing configurations with parallel Workload \Rmnum{1}. AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocation. Figure \ref{fig:hyb-plcmt-apps-commtime} shows each application communication time when hybrid placement coupled with different routing schemes, together with other configurations. 
 
 MultiGrid and CrystalRouter have basically the same performance with hybrid placement compared against random placement. Since they get random allocation in the hybrid placement scheme. AMG being improved a lot when hybrid placement in use. Compared with ``RA" and ``RPA", ``HA" and ``HPA" can significantly reduce AMG communication time, shown in Figure \ref{fig:hyb-plcmt-amg-commtime}. This is due the contiguous allocation AMG gets in the hybrid placement scheme. AMG doesn't share router with other applications. However, when (progressive) adaptive routing are in use, the traffic from MultiGrid and CrystalRouter is still being redirected to the groups where AMG resides. Since AMG is less communication-intensive and can not fully utilize network bandwidth, it is likely that the intermediate routers pick for the traffic from MultiGrid and CrystalRouter are from AMG's group. 
 
@@ -1054,7 +1059,7 @@ The impact of job placement to both system and application always catch research
 Recently, several researchers have investigated the job placement and routing schemes on dragonfly network. Bogdan et al. proposed novel solution for mapping tasks of application that conforms to Nearest Neighbor communication pattern on dragonfly network \cite{hoefler-hpdc14}. Jain et al. conducted a comprehensive analysis of various job placement and routing scheme with regard to network link throughput on dragonfly network \cite{jain-sc14}. Their work is based on an analytical model and synthetic workload. Bhatele et al. used simulation to study the performance of synthetic workload under the different task mapping and routing schemes on two-level direct networks \cite{bhatele-sc11}.
 
 
-Our work different from the previous works in the following ways. First, instead of using synthetic workload that generated based on predefined communication patterns, our simulation is driven by real application traces collected from production system. Second, not only we care about the workload performance, but also we pay attention to each individual application in the workload. We found that although random placement \& adaptive routing can improve the workload performance, some specific application in the workload may suffer performance degradation. Third, with the sophisticated simulation tool CODES, we can not only get applications communication information, but also the insight about the network status when application is running. The traffic and busy time of router's each link are valuable information for detailed analysis.
+Our work different from the previous works in the following ways. First, instead of using synthetic workload that generated based on predefined communication patterns, our simulation is driven by real application traces collected from production system. Second, not only we care about the workload performance, but also we pay attention to each individual application in the workload. We found that although random placement coupled with adaptive routing can improve the workload performance, some specific application in the workload may suffer performance degradation. Third, with the sophisticated simulation tool CODES, we can not only get applications communication information, but also the insight about the network status when application is running. The traffic and busy time of router's each link are valuable information for detailed analysis.
 
 \section{Conclusion}
 \label{sec:conclusion}
