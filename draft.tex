@@ -385,7 +385,7 @@ The high-radix, low-diameter dragonfly network will be the choice of many comput
 \section{Introduction}
 \label{sec:intro}
 
-The low latency and high bandwidth interconnect network plays a critical role in HPC system performance. As computational capabilities continue to grow due to many-core nodes with accelerators, the network is increasingly becoming a scare resources. The high-radix, low-diameter dragonfly topology can lower the \NOTE{?} cost of the interconnect, improve network bandwidth and reduce packet latency \cite{dally-dragonfly}. This make the dragonfly network an very promising choice for building petaflop and beyond supercomputers. 
+The low latency and high bandwidth interconnect network plays a critical role in HPC system performance. As computational capabilities continue to grow due to many-core nodes with accelerators, the network is increasingly becoming a scarce resource. The high-radix, low-diameter dragonfly topology can lower the \NOTE{?} cost of the interconnect, improve network bandwidth and reduce packet latency \cite{dally-dragonfly}. This make the dragonfly network an very promising choice for building petaflop and beyond supercomputers. 
 %The procurement results from Trinity and CORAL project shows the great performance improvement can be got from using dragonfly network. 
 
 
@@ -1058,12 +1058,13 @@ hybrid placement and contiguous placement have similar performance for AMG. This
 
 \subsection{Key Observations}
 
-\emph{Compared with random placement policy, hybrid placement can guarantee similar network performance.}
+Based on the results from experimenting with hybrid placement policy, we can make the following observations.
 
-\emph{Hybrid placement can mitigate the performance degradation of less communication-intensive application. } Unlike random placement which indulge ``bully", hybrid placement can restrain it to some extent.
+\emph{Compared with random placement policy, hybrid placement can guarantee similar network performance.} Hybrid placement policy allows network sharing between communication intensive applications, thus alleviates the potential congestion and improves network utilization.
 
+\emph{Hybrid placement can mitigate the performance degradation of less communication-intensive application.} Hybrid placement policy preserves contiguous allocation for less communication-intensive application, prevents network resource from being shared by others. Unlike random placement which indulges ``bully", hybrid placement can restrain it to some extent.
 
-
+Hybrid placement can guarantee the performance of individual application without causing performance degradation to network performance. Compared with contiguous and random placement policy, hybrid placement are more preferable to HPC systems with dragonfly networks.
 
 %\section{Summary}
 %Based on the results we got from both real application traces and synthetic workload, we can make the following observations:
