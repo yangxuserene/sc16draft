@@ -16,16 +16,14 @@ FILE_NAME=draft
 .PHONY: all, clean, view
 
 all:
-	# $(LATEX) $(FILE_NAME).tex
 	$(PDFLATEX) $(FILE_NAME).tex
-	#$(BIBTEX) $(FILE_NAME).aux
-	#$(PDFLATEX) $(FILE_NAME).tex
+	$(BIBTEX) $(FILE_NAME).aux
+	$(PDFLATEX) $(FILE_NAME).tex
 	$(PDFLATEX) $(FILE_NAME).tex
 
 view: all
 	$(VIEWER) $(FILE_NAME).pdf
-	rm *.log *.aux *.out *.blg *.bbl
-	rm *-eps-converted-to.pdf
+	rm *.log *.aux *.blg *.bbl
 
 clean:
-	rm *.log *.aux *.dvi *.out *.blg *.bbl *.ps *.bak *.backup
+	rm *.log *.aux *.dvi *.out *.blg *.bbl *.ps *.bak
