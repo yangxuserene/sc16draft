@@ -1,0 +1,8 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this paper, we have conducted extensive study about application's behavior when running on dragonfly network with different job placement and routing configurations. We resorted to CODES, a high-fidelity HPC network simulation tool, and used three parallel scientific applications traces collected from production system to analyze the applications' behavior on network level. We found that when applications are running concurrently, although random placement can uniformly distribute the workload traffic over the network to reach load balance and hot-spots free for the network, the performance of certain job would be impaired. We identify this phenomenon as ``bully" between concurrently running jobs, and the victim always being the less communication-intensive one. On the other hand, the contiguous placement tend to cause local congestion, however when coupled with adaptive routing, it can guarantee the performance of ``bullee" application by limiting the network sharing from concurrently running peers. 
+
+Due the presence of this ``bully", we propose to use hybrid placement policy for workload running on systems with dragonfly networks. In hybrid placement policy, the less intensive applications get contiguous allocations, and the intensive ones get random allocations. We believe the findings presented in this paper can illuminate a path to more efficient workload manager for future systems with dragonfly network.
+
+

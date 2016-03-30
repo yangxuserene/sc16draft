@@ -1,0 +1,32 @@
+\section{Introduction}
+\label{sec:intro}
+
+The low latency and high bandwidth interconnect network plays a critical role in HPC system performance. As computational capabilities continue to grow due to many-core nodes with accelerators, the network is increasingly becoming a scarce resource. The high-radix, low-diameter dragonfly topology can lower the extension cost of the interconnect, improve network bandwidth and reduce packet latency \cite{dally-dragonfly}. This make the dragonfly network a very promising choice for building petaflop and beyond supercomputers. 
+%The procurement results from Trinity and CORAL project shows the great performance improvement can be got from using dragonfly network. 
+
+
+While dragonfly topologies provide low-latency and high-bandwidth networking, efficiently utilizing it is a significant concern. In particular, intelligent job placement to avoid interference is of paramount importance to guarantee the performance of each job when it shares network resources with other concurrently running peers \cite{bhatele2015, dskinner}. Recent studies suggest that random job placement coupled with adaptive routing can alleviate local congestion, eliminate hot-spots and reach load-balance for dragonfly networks \cite{jain-sc14, bhatele-sc11, brandt2014}. 
+
+
+In this work, we study the interference between concurrently running jobs on dragonfly networks with different job placement and routing policies. We use CODES, an HPC network simulation toolkit with high fidelity and excellent scalability for packet level simulation \cite{codes}. Unlike much existing work that rely on synthetic workloads, we use traces of three representative applications from the DOE Design Forward Project \cite{designforwardwebpage}. The advantage of using real application traces is straight forward: these traces can capture detailed application communication behaviors that are  omitted in synthetic workload for simplification. Applications are usually distinctive from each other in data transfer amount, communication pattern, operation dependency etc., which can be impractical to reproduce in a synthetic workload.
+
+We conduct extensive experiments with three applications running on dragonfly network with two job placement policies and three routing policies. We analyze the performance of network as well as individual application when running with different placement and routing configurations. Our evaluation is based on more than 1000 runs of simulation. We make the following interesting observations through extensive simulation.
+
+
+\begin{itemize}
+   
+    \item Random placement coupled with adaptive routing can uniformly distribute traffic over the network, avoid hot-spots and alleviate traffic congestion, optimizing the overall performance of the dragonfly network. 
+    
+    \item The ``bully" behavior occurs between concurrently running jobs on a dragonfly network when random placement and adaptive routing are in use. Communication-intensive jobs obtain performance improvement at the expense of less intensive jobs suffering performance degradation. 
+    
+    \item Random placement coupled with adaptive routing can improve the performance of communication-intensive jobs by enabling network resource sharing, though it introduces interference between concurrently running jobs.
+    
+    \item Contiguous placement coupled with minimal routing can guarantee consistency performance of less communication-intensive jobs by prohibiting network resource sharing, though it results in local network congestion and unbalanced network utilization.
+    
+\end{itemize}
+
+Based on our observations, the optimal job placement and routing solution for the workload running dragonfly system should be specific to the job communication intensity. \emph{The random placement and adaptive routing are preferable to communication-intensive jobs, whereas contiguous placement and minimal routing are in favor of less intensive jobs.} To the best of our knowledge, using parallel application traces from production systems for the study of job interference on dragonfly networks has not been reported so far. We believe the observations and analysis presented in this paper are valuable to a number of communities including HPC computing centers, system software developers, and system administrators. For example, the computing centers should take resource sharing into consideration when choosing proper configurations for building their dragonfly networks. System software developers could design better scheduling algorithms for jobs with distinct communication behavior. System administrators could make more accurate predication about system availability based on job running status under different placement and routing configurations.
+
+The rest of this paper is organized as follows. Section \ref{sec:background} describes an implementation of the dragonfly network, introduces the placement policies and routing policies. Section \ref{sec: methodology} talks about the use of CODES as a research vehicle and three representative applications from the DOE Design Forward Project. Section \ref{sec:workload-1} presents the observations and analysis of three applications running on a dragonfly network with different placement and routing configurations. Section \ref{sec:workload-2} validates the observations we obtain from previous section. Section \ref{sec: hybrid placement} presents a alternative placement policy for the dragonfly network. Section \ref{sec:related work} discusses the related work. Finally, the conclusion is presented in Section \ref{sec:conclusion}.
+
+
