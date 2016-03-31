@@ -101,6 +101,8 @@ Due to the same reason, no router suffers exceptionally long saturated time on t
 Figure~\ref{fig:terminal-link-traffic} is for the purpose of symmetry, it shows the traffic per rank (aka traffic through terminal links), which stay the same when different placement and routing configurations are in use. All six lines are overlapped in Figure~\ref{fig:terminal-link-traffic}. However, due to the traffic changes on local and channels, the saturated time of terminal links will experience variability when different routing policies are in use, as shown in Figure~\ref{fig:terminal-link-stime}. When contiguous placement coupled with minimal routing(CM), the accumulated congestion on local and global channels cause extremely long saturated time on the terminal links, shown as the blue dashed line in Figure~\ref{fig:terminal-link-stime}. This again manifests the severe congestion caused by using contiguous placement and minimal routing. 
 
 
+
+
 \subsection{Individual Application Analysis}
 \label{sec: workload-1 app analysis}
 
@@ -108,43 +110,52 @@ Figure~\ref{fig:terminal-link-traffic} is for the purpose of symmetry, it shows 
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.5 in]{wkld/amg/commtime}
-        \caption{AMG}
-        \label{fig:amg-commtime}
-    \end{subfigure}%
-    \hspace{1em}%
-    \begin{subfigure}[t]{0.32\textwidth}
-        \centering
         \includegraphics[height=1.5 in]{wkld/mg/commtime}
         \caption{MultiGrid}
         \label{fig:mg-commtime}
     \end{subfigure}%
+    \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.5 in]{wkld/cr/commtime}
         \caption{CrystalRouter}
         \label{fig:cr-commtime}
     \end{subfigure}%
-   \caption{The communication time of all ranks in each application. Random placement and adaptive routing can improve the communication time of MultiGrid and CrystalRouter, while AMG's communication time is greatly prolonged.}
+    \hspace{1em}%
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.5 in]{wkld/amg/commtime}
+        \caption{AMG}
+        \label{fig:amg-commtime}
+    \end{subfigure}%
+    \caption{The communication time of all ranks in each application. Random placement and adaptive routing can improve the communication time of MultiGrid and CrystalRouter, while AMG's communication time is greatly prolonged.}
    \label{fig:apps-commtime}
 \end{figure*}
-\TODO{resume from here}
-We isolate each application from Workload~\Rmnum{1} to study the performance application
-Figure \ref{fig:apps-commtime} shows the distribution of communication time of three applications in per rank manner, when they running concurrently under 6 different placement and routing configurations listed in Table\ref{tab: placement routing configs}.
 
-As shown in Figure \ref{fig:mg-commtime}, \ref{fig:cr-commtime}, MultiGrid and CrystalRouter suffer the longest communication time when running with contiguous placement and minimal routing (CM). When contiguous placement coupled with adaptive or progressive adaptive routing (CA, CPA), the communication time of both MultiGrid and CrystalRouter are significantly reduced. Random placement further reduces their communication time, and reaches the best performance when coupled with (progressive) adaptive routing (RPA, RA). Both MultiGrid and CrystalRouter show the same trend when they are running under different placement and routing configurations. AMG is quite an exception. The communication time of AMG skyrockets when running under random placement coupled with (progressive) adaptive routing (RPA, RA), shown in Figure \ref{fig:amg-commtime}. The contiguous placement coupled with (progressive) adaptive routing can reach the best performance for AMG. CM is no better than RM, but still much better RPA, RA. 
 
+
+We study the performance of each application individually by isolating it from Workload~\Rmnum{1}.   
+Figure~\ref{fig:apps-commtime} shows the distribution of communication time of three applications in per rank manner, when they running concurrently under six different placement and routing configurations listed in Table\ref{tab: placement routing configs}.
+
+As shown in Figure~\ref{fig:mg-commtime}, MultiGrid takes the most communication time when it is running with contiguous placement and minimal routing (CM). When contiguous placement coupled with adaptive or progressive adaptive routing (CA, CPA) are in use, the communication time is significantly reduced. Random placement coupled with minimal routing (RM) can make further improvement, and reaches the best performance(lowest communication time) when coupled with adaptive and progressive adaptive routing(RA, RPA). Due to the variance of data transfer amount among MPI ranks, MultiGrid communication time also presents great variation, indicated by the long boxes in Figure~\ref{fig:mg-commtime}.
+
+CrystalRouter takes more communication time compared with the other applications because of its high volume of data transfer. When it is running with six placement and routing configurations, 
+CrystalRouter communication time presents similarly trend as MultiGrid but with little variance, shown in Figure~\ref{fig:cr-commtime}. 
+
+
+AMG is quite an exception. 
+The communication time of AMG running with different placement and routing configuration are shown in Figure~\ref{fig:amg-commtime}.
+When contiguous placement is in use, AMG behaves similarly as MultiGrid and CrystalRouter over three routing policies. 
+It takes comparable amount of communication time when contiguous placement coupled with adaptive and progressive routing. 
+When coupled with minimal routing, the communication time increase twofold. 
+AMG behaves abnormally when random placement is in use. 
+The communication time skyrockets when random placement coupled with (progressive) adaptive routing (RPA, RA) are in use. Minimal routing (RM) can mitigate this performance degradation, but still worse than CA and CPA.
+
+We observe that when Workload~\Rmnum{1} is running with random placement and (progressive) adaptive routing, the performance of MultiGrid and CrystalRouter are significant improved, whereas AMG suffers performance degradation. 
 
 
 \begin{figure*}[t]
     \centering
-    \begin{subfigure}[t]{0.32\textwidth}
-        \centering
-        \includegraphics[height=1.8 in]{wkld/amg/lc-traffic}
-        \caption{AMG Local Channel Traffic}
-        \label{fig:amg-lc-traffic}
-    \end{subfigure}\hfill
-    \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.8 in]{wkld/mg/lc-traffic}
@@ -156,16 +167,15 @@ As shown in Figure \ref{fig:mg-commtime}, \ref{fig:cr-commtime}, MultiGrid and C
         \includegraphics[height=1.8 in]{wkld/cr/lc-traffic}
         \caption{CR Local Channel Traffic}
         \label{fig:cr-lc-traffic}
-    \end{subfigure}\\
-    \centering
+    \end{subfigure}\hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{wkld/amg/gc-traffic}
-        \caption{AMG Global Channel Traffic}
-        \label{fig:amg-gc-traffic}
-    \end{subfigure}\hfill
-    \hspace{1em}%
-    \begin{subfigure}[t]{0.32\textwidth}
+        \includegraphics[height=1.8 in]{wkld/amg/lc-traffic}
+        \caption{AMG Local Channel Traffic}
+        \label{fig:amg-lc-traffic}
+    \end{subfigure}\\  
+    \centering
+   \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.8 in]{wkld/mg/gc-traffic}
         \caption{MG Global Channel Traffic}
@@ -176,11 +186,18 @@ As shown in Figure \ref{fig:mg-commtime}, \ref{fig:cr-commtime}, MultiGrid and C
         \includegraphics[height=1.8 in]{wkld/cr/gc-traffic}
         \caption{CR Global Channel Traffic}
         \label{fig:cr-gc-traffic}
-    \end{subfigure}%
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.8 in]{wkld/amg/gc-traffic}
+        \caption{AMG Global Channel Traffic}
+        \label{fig:amg-gc-traffic}
+    \end{subfigure}
    \caption{The aggregate traffic go through the local and global channels of routers serving specific application. ``CA" and ``CPA" perform comparably, the corresponding lines are overlapped. More routers are involved in serving each application when random placement is in use, compared with contiguous placement.}
    \label{fig:3app-lc-gc-traffic}
 \end{figure*}
 
+\TODO{resume from here}
 
 % Show the evidence from network level, explain why AMG is different. 
 We look into network level to identify the culprit behind AMG's abnormal behavior with random placement and adaptive routing. By identifying the compute nodes each MPI rank resides on and routers that serving each application, we can see that the traffic go through the routers serving AMG skyrockets when random placement and adaptive routing is in use, shown in Figure \ref{fig:amg-lc-traffic} and \ref{fig:amg-gc-traffic}. Adaptive routing will redirect the traffic of other applications to go through the routers belonging to AMG, and increase the traffic burden on those routers, thus slow down the communication of AMG.
