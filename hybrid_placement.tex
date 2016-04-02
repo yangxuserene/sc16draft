@@ -18,14 +18,12 @@ while the communication-intensive jobs get random allocation in order to share n
 When Workload~\Rmnum{1} is running on the dragonfly network with hybrid placement policy, 
 AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocations. 
 The experiment results show that hybrid placement performs comparably as random placement for improving network performance and mitigates the degradation of AMG caused by the ``bullying".
-\footnote{Due to page limit, we won't present the analysis about network traffic and saturated time in this section.}
 
 
 
 \subsection{Network Performance Analysis}
 
-Hybrid placement is also coupled with three routing policies, Minimal, Adaptive and Progressive Adaptive. They are denoted respectively as HM, HA and HPA. As presented in the previous section, random placement outperforms contiguous placement in terms of network performance, we only compare the results of hybrid placement with random placement due to the page limit.
-
+Hybrid placement is also coupled with three routing policies, minimal, adaptive and progressive adaptive, denoted respectively as HM, HA and HPA. As presented in section~\ref{sec: workload-1 network analysis} and~\ref{sec: workload-2 network analysis}, random placement outperforms contiguous placement in terms of network performance, the analysis in this section only focuses on the comparison between hybrid and random placement policies. 
 
 \begin{table}[ht]
 \begin{center}
@@ -47,8 +45,15 @@ Time(ms)  &273 &255 &255 &255 &265 &264  \\ % Content row 1
 \end{center}
 \end{table}
 
+Due to page limit, we only present the average communication time spent by Workload~\Rmnum{1} for the evaluation of the network performance.
+\footnote{The analysis about network traffic and saturated time are omitted in this section due to page limit.}
+As shown in Table~\ref{tab: hyb-placement-wkld-commtime}, 
+hybrid placement coupled with (progressive) adaptive routing (HA, HPA) can guarantee the same performance as random placement coupled with minimal routing (RM), thus the average workload communication time stays unchanged. 
+When hybrid placement coupled with minimal routing (HM) is in use, 
+the network performance declines  as indicated by the increasing average communication time. 
+The consecutive groups assigned to AMG results in the diminishing of network resource shared by MultiGrid and CrystalRouter, 
+causing unbalanced utilization over the network.  
 
-As shown in Table \ref{tab: hyb-placement-wkld-commtime}, hybrid placement and random placement perform comparably. When coupled with minimal routing, RM outperforms HM. However, when coupled with (progressive) adaptive routing, HA and HPA outperform RA and RPA. HA and HPA perform equally well as compared with RM.  
 
 
 \subsection{Individual Application Analysis}
@@ -57,37 +62,46 @@ As shown in Table \ref{tab: hyb-placement-wkld-commtime}, hybrid placement and r
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.3 in]{hyb-plcmt/amg/commtime}
-        \caption{AMG Communication Time}
-        \label{fig:hyb-plcmt-amg-commtime}
-    \end{subfigure}\hfill
-    \hspace{1em}%
-    \begin{subfigure}[t]{0.32\textwidth}
-        \centering
         \includegraphics[height=1.3 in]{hyb-plcmt/mg/commtime}
-        \caption{MG Communication Time}
+        \caption{MultiGrid Communication Time}
         \label{fig:hyb-plcmt-mg-commtime}
     \end{subfigure}\hfill
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.3 in]{hyb-plcmt/cr/commtime}
-        \caption{CR Communication Time}
+        \caption{CrystalRouter Communication Time}
         \label{fig:hyb-plcmt-cr-commtime}
-    \end{subfigure}%
-   \caption{Application communication time. Workload \Rmnum{1} is running under all the possible placement and routing configurations.}
+    \end{subfigure}\hfill
+    \begin{subfigure}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[height=1.3 in]{hyb-plcmt/amg/commtime}
+        \caption{AMG Communication Time}
+        \label{fig:hyb-plcmt-amg-commtime}
+    \end{subfigure}
+   \caption{Application communication time. Workload~\Rmnum{1} is running with all placement and routing configurations.}
    \label{fig:hyb-plcmt-apps-commtime}
 \end{figure*}
 
-Figure \ref{fig:hyb-plcmt-apps-commtime} shows the communication time of each application when hybrid placement configurations are in use. MultiGrid and CrystalRouter have basically the same performance with hybrid placement as compared with random placement. Since they still get random allocation in the hybrid placement. The performance of AMG is significantly improved when hybrid placement is in use. Compared with ``RA" and ``RPA", ``HA" and ``HPA" can greatly reduce AMG communication time, shown in Figure \ref{fig:hyb-plcmt-amg-commtime}. This is due the contiguous allocation assigned to AMG in the hybrid placement policy. When being coupled with minimal routing, hybrid placement and contiguous placement have similar performance for AMG. However, when (progressive) adaptive routing are in use, the traffic from MultiGrid and CrystalRouter still might be redirected to the routers serving AMG. Since AMG is less communication-intensive and can not fully utilize network, it is likely that the intermediate routers picked for the traffic from MultiGrid and CrystalRouter could be from AMG's groups. So for AMG, ``HA" and ``HPA" are worse than ``CA" and ``CPA", but they are much better than ``RA" and ``RPA".
+The communication time of each application under all placement and routing configurations are presented in Figure~\ref{fig:hyb-plcmt-apps-commtime}. 
+As shown in Figure~\ref{fig:hyb-plcmt-mg-commtime} and~{fig:hyb-plcmt-cr-commtime},
+MultiGrid and CrystalRouter have similar performance with hybrid placement (HM, HA, HPA) as compared with random placement (RM, RA, RPA),
+since they are still assigned with random allocations in the hybrid placement policy. 
+The performance of AMG is significantly improved when hybrid placement configurations are in use. 
+The communication time of AMG are reduced by half when the placement policy switched from random to hybrid, 
+as shown in Figure \ref{fig:hyb-plcmt-amg-commtime}. 
+This is due the contiguous allocation assigned to AMG in the hybrid placement policy. 
+When being coupled with minimal routing, hybrid placement and contiguous placement have similar performance for AMG. 
+However, when (progressive) adaptive routing are in use, the traffic from MultiGrid and CrystalRouter still might be redirected to the routers serving AMG. 
+Since AMG is less communication-intensive and can not fully utilize network, 
+it is likely that the intermediate routers picked for the traffic from MultiGrid and CrystalRouter could be from AMG's groups. Both the communication-intensive and the less intensive application can benefit from hybrid placement coupled with (progressive) adaptive routing.
 
-\subsection{Key Observations}
 
-Based on the results from experimenting with hybrid placement policy, we can make the following observations.
-
-\emph{Compared with random placement policy, hybrid placement can guarantee comparable network performance.} Hybrid placement policy allows network sharing between communication intensive applications, thus alleviates the potential congestion and improves network utilization.
-
-\emph{Hybrid placement can mitigate the performance degradation of less communication-intensive application.} Hybrid placement policy preserves contiguous allocation for less communication-intensive application, prevents network resource from being shared by others. Unlike random placement indulging the ``bully", hybrid placement can restrain it to some extent.
-
-Hybrid placement can guarantee the performance of individual application without causing performance degradation to network performance. Compared with contiguous and random placement policy, hybrid placement are more preferable to HPC systems with dragonfly networks.
+The experiments with hybrid placement demonstrate that assigning each application with its preferable allocation can mitigate the negative effect of the ``bullying", in the meanwhile, 
+the network can still reach the optimal performance.
+Compared with random placement policy, hybrid placement can guarantee comparable network performance, by enabling network sharing between communication intensive applications .
+It can also mitigate the performance degradation of less communication-intensive applications, 
+by assigning them with contiguous allocation to partially avoid network sharing.
+Unlike random placement indulging the ``bullying", hybrid placement can restrain it to some extent.
+Hybrid placement policy is worthy of consideration for the adoption on dragonfly systems in the future.
 
 
