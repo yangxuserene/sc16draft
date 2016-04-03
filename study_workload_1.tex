@@ -212,11 +212,8 @@ AMG is quite an exception.
 The communication time of AMG running with different placement and routing configuration are shown in Figure~\ref{fig:amg-commtime}.
 When contiguous placement is in use, AMG behaves similarly as MultiGrid and CrystalRouter over three routing policies. 
 It takes comparable amount of communication time when contiguous placement coupled with adaptive and progressive routing. 
-When coupled with minimal routing, the communication time increase twofold. 
-AMG behaves abnormally when random placement is in use. 
-The communication time skyrockets when random placement coupled with (progressive) adaptive routing (RPA, RA) are in use. Minimal routing (RM) can mitigate this performance degradation, but still worse than CA and CPA.
-
-We observe that when Workload~\Rmnum{1} is running with random placement and (progressive) adaptive routing, 
+When coupled with minimal routing, the communication time almost doubles. 
+The communication time skyrockets when random placement coupled with (progressive) adaptive routing (RPA, RA) are in use. Minimal routing (RM) can mitigate this performance degradation, but still worse than CA and CPA. We observe that when Workload~\Rmnum{1} is running with random placement and (progressive) adaptive routing, 
 the performance of MultiGrid and CrystalRouter are significant improved, whereas AMG suffers performance degradation. 
 
 
@@ -286,7 +283,6 @@ from their over-loaded routers to the less busy routers in the network.
 In this case, a majority of those less busy routers are belonging to AMG.
 
 
-
 Since AMG is less communication-intensive, 
 the routers serving AMG have small volume of traffic on local and global channels when the contiguous placement is use, 
 shown as the dashed line in Figure~\ref{fig:amg-lc-traffic},~\ref{fig:amg-gc-traffic}. 
@@ -295,9 +291,6 @@ more routers are involved in serving AMG,
 and the traffic skyrockets on the local and global channels, 
 shown as the solid lines in Figure~\ref{fig:amg-lc-traffic},~\ref{fig:amg-gc-traffic}. 
 The increased traffic comes from the communication-intensive MultiGrid and CrystalRouter. 
-
-
-
 AMG behaves abnormally when random placement is in use 
 because the routers serving AMG have to take the traffic from MultiGrid and CrystalRouter. 
 The extra traffic from the other communication-intensive applications 
