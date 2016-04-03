@@ -18,45 +18,45 @@ while the communication-intensive jobs get random allocation in order to share n
 When Workload~\Rmnum{1} is running on the dragonfly network with hybrid placement policy, 
 AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocations. 
 The experiment results show that hybrid placement performs comparably as random placement for improving network performance and mitigates the degradation of AMG caused by the ``bullying".
-
-
-
-\subsection{Network Performance Analysis}
-
-Hybrid placement is also coupled with three routing policies, minimal, adaptive and progressive adaptive, denoted respectively as HM, HA and HPA. As presented in section~\ref{sec: workload-1 network analysis} and~\ref{sec: workload-2 network analysis}, random placement outperforms contiguous placement in terms of network performance, the analysis in this section only focuses on the comparison between hybrid and random placement policies. 
-
-\begin{table}[ht]
-\begin{center}
-\caption{Average time spent on communication by all MPI ranks when Workload I is running on dragonfly network under hybrid placement and random placement policies.} 
-\label{tab: hyb-placement-wkld-commtime}
-\begin{tabular}{l c c c c c c }
-\toprule % Top horizontal line
-\toprule
-&\multicolumn{6}{c}{Placement and Routing Configurations} \\
-\cmidrule(l){2-7}
-          & HM & HA & HPA & RM & RA & RPA \\ % Column names row
-\midrule % In-table horizontal line
-Time(ms)  &273 &255 &255 &255 &265 &264  \\ % Content row 1
-%\midrule
-%Workload II &1747 &1991 &1991 &1791 &2367 &1965 \\
-\midrule % In-table horizontal line
-\bottomrule % Bottom horizontal line
-\end{tabular}
-\end{center}
-\end{table}
-
-Due to page limit, we only present the average communication time spent by Workload~\Rmnum{1} for the evaluation of the network performance.
 \footnote{The analysis about network traffic and saturated time are omitted in this section due to page limit.}
-As shown in Table~\ref{tab: hyb-placement-wkld-commtime}, 
-hybrid placement coupled with (progressive) adaptive routing (HA, HPA) can guarantee the same performance as random placement coupled with minimal routing (RM), thus the average workload communication time stays unchanged. 
-When hybrid placement coupled with minimal routing (HM) is in use, 
-the network performance declines  as indicated by the increasing average communication time. 
-The consecutive groups assigned to AMG results in the diminishing of network resource shared by MultiGrid and CrystalRouter, 
-causing unbalanced utilization over the network.  
+
+
+%\subsection{Network Performance Analysis}
+%
+%Hybrid placement is also coupled with three routing policies, minimal, adaptive and progressive adaptive, denoted respectively as HM, HA and HPA. As presented in section~\ref{sec: workload-1 network analysis} and~\ref{sec: workload-2 network analysis}, random placement outperforms contiguous placement in terms of network performance, the analysis in this section only focuses on the comparison between hybrid and random placement policies. 
+%
+%\begin{table}[ht]
+%\begin{center}
+%\caption{Average time spent on communication by all MPI ranks when Workload I is running on dragonfly network under hybrid placement and random placement policies.} 
+%\label{tab: hyb-placement-wkld-commtime}
+%\begin{tabular}{l c c c c c c }
+%\toprule % Top horizontal line
+%\toprule
+%&\multicolumn{6}{c}{Placement and Routing Configurations} \\
+%\cmidrule(l){2-7}
+%          & HM & HA & HPA & RM & RA & RPA \\ % Column names row
+%\midrule % In-table horizontal line
+%Time(ms)  &273 &255 &255 &255 &265 &264  \\ % Content row 1
+%%\midrule
+%%Workload II &1747 &1991 &1991 &1791 &2367 &1965 \\
+%\midrule % In-table horizontal line
+%\bottomrule % Bottom horizontal line
+%\end{tabular}
+%\end{center}
+%\end{table}
+%
+%Due to page limit, we only present the average communication time spent by Workload~\Rmnum{1} for the evaluation of the network performance.
+%\footnote{The analysis about network traffic and saturated time are omitted in this section due to page limit.}
+%As shown in Table~\ref{tab: hyb-placement-wkld-commtime}, 
+%hybrid placement coupled with (progressive) adaptive routing (HA, HPA) can guarantee the same performance as random placement coupled with minimal routing (RM), thus the average workload communication time stays unchanged. 
+%When hybrid placement coupled with minimal routing (HM) is in use, 
+%the network performance declines  as indicated by the increasing average communication time. 
+%The consecutive groups assigned to AMG results in the diminishing of network resource shared by MultiGrid and CrystalRouter, 
+%causing unbalanced utilization over the network.  
 
 
 
-\subsection{Individual Application Analysis}
+%\subsection{Individual Application Analysis}
 
 \begin{figure*}[t!]
     \centering

@@ -126,33 +126,33 @@ This again manifests the severe congestion caused by using contiguous placement 
 
 %===========================================================
 %from the workload perspective to study the network performance. 
-The efficiency of the workload communication is another perspective to evaluate the network performance. 
-The average communication time spent by all MPI ranks when Workload~\Rmnum{1} is running under different placement and routing configurations shown in Table~\ref{tab:wkld-commtime}. 
-The random placement policy performs comparably with all routing policies (RM, RA and RPA). They outperform all contiguous placement configurations (CM, CA and CPA). The contiguous placement coupled with minimal routing (CM) results in highest communication time. When coupled with (progressive) adaptive routing (CA, CPA), the average communication time can be greatly reduced. When random placement is in use, the workload communication efficiency can be further improved. 
-
-
-\begin{table}[ht]
-\begin{center}
-\caption{Average communication time by all MPI ranks when Workload I is running on the dragonfly network under six different placement and routing configurations.} 
-\label{tab:wkld-commtime}
-\begin{tabular}{l c c c c c c }
-\toprule % Top horizontal line
-\toprule
-&\multicolumn{6}{c}{Placement and Routing Configurations} \\ 
-\cmidrule(l){2-7}
-          & CM & CA & CPA & RM & RA & RPA \\ % Column names row
-\midrule % In-table horizontal line
-Time(ms)  & 476  & 300  & 301  & 255  & 265  & 264  \\ % Content row 1
-
-\midrule % In-table horizontal line
-\bottomrule % Bottom horizontal line
-\end{tabular}
-\end{center}
-\end{table}
-
-
-The random placement can balance the network traffic load by uniformly distribute the traffic. The (progressive) adaptive routing can avoid the hot-spots by redirecting the traffic away from congested area. The network can reach its optimal performance, when random placement coupled with (progressive) adaptive routing are in use. 
-
+%The efficiency of the workload communication is another perspective to evaluate the network performance. 
+%The average communication time spent by all MPI ranks when Workload~\Rmnum{1} is running under different placement and routing configurations shown in Table~\ref{tab:wkld-commtime}. 
+%The random placement policy performs comparably with all routing policies (RM, RA and RPA). They outperform all contiguous placement configurations (CM, CA and CPA). The contiguous placement coupled with minimal routing (CM) results in highest communication time. When coupled with (progressive) adaptive routing (CA, CPA), the average communication time can be greatly reduced. When random placement is in use, the workload communication efficiency can be further improved. 
+%
+%
+%\begin{table}[ht]
+%\begin{center}
+%\caption{Average communication time by all MPI ranks when Workload I is running on the dragonfly network under six different placement and routing configurations.} 
+%\label{tab:wkld-commtime}
+%\begin{tabular}{l c c c c c c }
+%\toprule % Top horizontal line
+%\toprule
+%&\multicolumn{6}{c}{Placement and Routing Configurations} \\ 
+%\cmidrule(l){2-7}
+%          & CM & CA & CPA & RM & RA & RPA \\ % Column names row
+%\midrule % In-table horizontal line
+%Time(ms)  & 476  & 300  & 301  & 255  & 265  & 264  \\ % Content row 1
+%
+%\midrule % In-table horizontal line
+%\bottomrule % Bottom horizontal line
+%\end{tabular}
+%\end{center}
+%\end{table}
+%
+%
+%The random placement can balance the network traffic load by uniformly distribute the traffic. The (progressive) adaptive routing can avoid the hot-spots by redirecting the traffic away from congested area. The network can reach its optimal performance, when random placement coupled with (progressive) adaptive routing are in use. 
+%
 
 
 

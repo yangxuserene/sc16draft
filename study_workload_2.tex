@@ -85,34 +85,34 @@ thus the blue solid line(RM) is lower than the red and green solid line (RA, RPA
 \end{figure*}
 
 
-
-The average communication time spent by all MPI ranks when Workload~\Rmnum{2} is running under different placement and routing configurations shown in Table~\ref{tab:syn-wkld-commtime}. 
-We can observe the similar pattern as in Table~\ref{tab:wkld-commtime}
-The contiguous placement coupled with minimal routing results in highest communication time. 
-The random placement coupled with minimal routing is the most efficient. 
-Progressive adaptive routing is better than adaptive routing when random placement is in use, 
-and they have comparable results when coupled contiguous placement. 
-Same as Workload~\Rmnum{1}, the network reaches the optimal performance when Workload~\Rmnum{2} is running with random placement and adaptive routing. 
-
-\begin{table}[ht]
-\begin{center}
-\caption{Average time spent on communication by all MPI ranks when Workload II is running on dragonfly network under six different placement and routing configurations.} 
-\label{tab:syn-wkld-commtime}
-%\centering % Centers the table on the page, comment out to left-justify
-\begin{tabular}{l c c c c c c }
-\toprule % Top horizontal line
-\toprule
-&\multicolumn{6}{c}{Placement and Routing Configuration} \\ % Amalgamating several columns into one cell is done using the \multicolumn command as seen on this line
-\cmidrule(l){2-7}
-          & CM & CA & CPA & RM & RA & RPA \\ % Column names row
-\midrule % In-table horizontal line
-Time(ms)  & 3360 & 2204 & 2335 & 1791 & 2367 & 1965 \\ % Content row 1
-
-\midrule % In-table horizontal line
-\bottomrule % Bottom horizontal line
-\end{tabular}
-\end{center}
-\end{table}
+%+================================================================
+%The average communication time spent by all MPI ranks when Workload~\Rmnum{2} is running under different placement and routing configurations shown in Table~\ref{tab:syn-wkld-commtime}. 
+%We can observe the similar pattern as in Table~\ref{tab:wkld-commtime}
+%The contiguous placement coupled with minimal routing results in highest communication time. 
+%The random placement coupled with minimal routing is the most efficient. 
+%Progressive adaptive routing is better than adaptive routing when random placement is in use, 
+%and they have comparable results when coupled contiguous placement. 
+%Same as Workload~\Rmnum{1}, the network reaches the optimal performance when Workload~\Rmnum{2} is running with random placement and adaptive routing. 
+%
+%\begin{table}[ht]
+%\begin{center}
+%\caption{Average time spent on communication by all MPI ranks when Workload II is running on dragonfly network under six different placement and routing configurations.} 
+%\label{tab:syn-wkld-commtime}
+%%\centering % Centers the table on the page, comment out to left-justify
+%\begin{tabular}{l c c c c c c }
+%\toprule % Top horizontal line
+%\toprule
+%&\multicolumn{6}{c}{Placement and Routing Configuration} \\ % Amalgamating several columns into one cell is done using the \multicolumn command as seen on this line
+%\cmidrule(l){2-7}
+%          & CM & CA & CPA & RM & RA & RPA \\ % Column names row
+%\midrule % In-table horizontal line
+%Time(ms)  & 3360 & 2204 & 2335 & 1791 & 2367 & 1965 \\ % Content row 1
+%
+%\midrule % In-table horizontal line
+%\bottomrule % Bottom horizontal line
+%\end{tabular}
+%\end{center}
+%\end{table}
 
 
 
