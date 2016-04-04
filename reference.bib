@@ -447,7 +447,40 @@ month={May},}
  keywords = {cartesian and random task placement, direct and indirect routing, dragonfly networks, nearest neighbor exchanges, stencil computation},
 }
 
+@article{carothers_ross:_2002,
+	title = {{ROSS}: {A} high-performance, low-memory, modular {Time} {Warp} system},
+	volume = {62},
+	issn = {0743-7315},
+	shorttitle = {{ROSS}},
+	url = {http://www.sciencedirect.com/science/article/pii/S0743731502000047},
+	doi = {10.1016/S0743-7315(02)00004-7},
+	abstract = {In this paper, we introduce a new Time Warp system called ROSS: Rensselaer’s optimistic simulation system. ROSS is an extremely modular kernel that is capable of achieving event rates as high as 1,250,000 events per second when simulating a wireless telephone network model (PCS) on a quad processor PC server. In a head-to-head comparison, we observe that ROSS out performs the Georgia Tech Time Warp (GTW) system by up to 180\% on a quad processor PC server and up to 200\% on the SGI Origin 2000. ROSS only requires a small constant amount of memory buffers greater than the amount needed by the sequential simulation for a constant number of processors. ROSS demonstrates for the first time that stable, highly efficient execution using little memory above what the sequential model would require is possible for low-event granularity simulation models. The driving force behind these high-performance and low-memory utilization results is the coupling of an efficient pointer-based implementation framework, Fujimoto's fast GVT algorithm for shared memory multiprocessors, reverse computation and the introduction of kernel processes (KPs). KPs lower fossil collection overheads by aggregating processed event lists. This aspect allows fossil collection to be done with greater frequency, thus lowering the overall memory necessary to sustain stable, efficient parallel execution. These characteristics make ROSS an ideal system for use in large-scale networking simulation models. The principle conclusion drawn from this study is that the performance of an optimistic simulator is largely determined by its memory usage.},
+	number = {11},
+	urldate = {2016-04-04},
+	journal = {Journal of Parallel and Distributed Computing},
+	author = {Carothers, Christopher D. and Bauer, David and Pearce, Shawn},
+	month = nov,
+	year = {2002},
+	keywords = {Discrete-event simulation, parallel simulation, Reverse computation, Time warp},
+	pages = {1648--1669},
+	file = {ScienceDirect Full Text PDF:/Users/john/zotero/storage/39QKN66G/Carothers et al. - 2002 - ROSS A high-performance, low-memory, modular Time.pdf:application/pdf;ScienceDirect Snapshot:/Users/john/zotero/storage/MF8GDXAF/S0743731502000047.html:text/html}
+}
 
-
-
-
+@inproceedings{barnes_warp_2013,
+	address = {New York, NY, USA},
+	series = {{SIGSIM} {PADS} '13},
+	title = {Warp {Speed}: {Executing} {Time} {Warp} on 1,966,080 {Cores}},
+	isbn = {978-1-4503-1920-1},
+	shorttitle = {Warp {Speed}},
+	url = {http://doi.acm.org/10.1145/2486092.2486134},
+	doi = {10.1145/2486092.2486134},
+	abstract = {Time Warp is an optimistic synchronization protocol for parallel discrete event simulation that coordinates the available parallelism through its rollback and antimessage mechanisms. In this paper we present the results of a strong scaling study of the ROSS simulator running Time Warp with reverse computation and executing the well-known PHOLD benchmark on Lawrence Livermore National Laboratory's Sequoia Blue Gene/Q supercomputer. The benchmark has 251 million PHOLD logical processes and was executed in several configurations up to a peak of 7.86 million MPI tasks running on 1,966,080 cores. At the largest scale it processed 33 trillion events in 65 seconds, yielding a sustained speed of 504 billion events/second using 120 racks of Sequoia. This is by far the highest event rate reported by any parallel discrete event simulation to date, whether running PHOLD or any other benchmark. Additionally, we believe it is likely to be the largest number of MPI tasks ever used in any computation of any kind to date. ROSS exhibited a super-linear speedup throughout the strong scaling study, with more than a 97x speed improvement from scaling the number of cores by only 60x (from 32,768 to 1,966,080). We attribute this to significant cache-related performance acceleration as we moved to higher scales with fewer LPs per core. Prompted by historical performance results we propose a new, long term performance metric called Warp Speed that grows logarithmically with the PHOLD event rate. As we define it our maximum speed of 504 billion PHOLD events/sec corresponds to Warp 2.7. We suggest that the results described here are significant because they demonstrate that direct simulation of planetary-scale discrete event models are now, in principle at least, within reach.},
+	urldate = {2016-04-04},
+	booktitle = {Proceedings of the 1st {ACM} {SIGSIM} {Conference} on {Principles} of {Advanced} {Discrete} {Simulation}},
+	publisher = {ACM},
+	author = {Barnes, Jr., Peter D. and Carothers, Christopher D. and Jefferson, David R. and LaPre, Justin M.},
+	year = {2013},
+	keywords = {blue gene/q, parallel discrete-event simulation, Time warp},
+	pages = {327--336},
+	file = {ACM Full Text PDF:/Users/john/zotero/storage/38A44JFT/Barnes et al. - 2013 - Warp Speed Executing Time Warp on 1,966,080 Cores.pdf:application/pdf}
+}
