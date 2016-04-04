@@ -363,10 +363,10 @@ Argonne, IL, USA 60439\\
 The high-radix, low-diameter dragonfly network will be the choice of many computing facilities for building their next generation supercomputers. 
 Preliminary studies show that random placement with adaptive routing should be the rule of thumb to utilize such networks for it can uniformly distribute traffic and alleviate congestion. 
 However, in this paper, we made the observation that while random placement coupled with adaptive routing can load-balance the network, it can not guarantee the best performance for every single job.
-We have observed that the performance improvement of communication-intensive jobs comes with the sacrifice of less intensive jobs. 
-We identify this ``bully" behavior with the help of detailed network simulation and real application traces and validate the underneath causes.
-We propose a hybrid job placement policy that provide either contiguous or random allocation to each application based on its communication intensity. 
-With the help of the simulation, we demonstrate that this hybrid job placement policy can lead to performance improvement for less communication-intensive applications.
+The performance improvement of communication-intensive jobs comes with at the cost of performance degradation of less intensive jobs. 
+We identify this ``bully" behavior and validate its underneath causes with the help of detailed network simulation and real application traces.
+We propose a hybrid job placement policy providing either contiguous or random allocation to each application based on its communication intensity. 
+Our experiment results demonstrate that this hybrid job placement policy can lead to performance improvement for less communication-intensive applications.
 
 
 %We refer this phenomenon as ``bully" between concurrently running jobs. We presented a detailed analysis about this ``bully" behavior between jobs at the network level based on a sophisticated, high-fidelity discrete even-driven simulation tool. The observations and analysis presented in this work illuminate a path to the adoption of more efficient job placement policy and routing algorithm for HPC systems with dragonfly network.  
