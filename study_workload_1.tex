@@ -3,15 +3,15 @@
 %\section{Identify the ``Bully"}
 \label{sec:workload-1}
 
-The study of parallel workload~\Rmnum{1} consists of two parts. Firstly, we analyze the over-all network performance when Workload~\Rmnum{1} is running under different placement and routing configurations. Secondly, we isolate each application from the workload, analyze its performance by scrutinizing the traffic going through the routers that serve each job. The analysis allows us to identify the ``bully" in the workload. 
+The study of Workload~\Rmnum{1} consists of two parts. Firstly, we analyze the overall network performance when Workload~\Rmnum{1} is running under different placement and routing configurations. Secondly, we isolate each application from the workload, analyze its performance by scrutinizing the traffic going through its serving routers. The analysis allows us to identify the ``bully" in Workload~\Rmnum{1}. 
 
 
 
 \subsection{Network Performance Analysis}
 \label{sec: workload-1 network analysis}
 
-We study the network performance under different placement and routing configurations by analyzing the traffic going through the routers and their saturated time. 
-The distribution of traffic over the network can reveal the loading situation, 
+We study the network performance by analyzing the traffic going through all the routers in the network and their saturated time. 
+The traffic distribution can reveal the loading situation in the network, 
 indicating whether the network is load-balanced or not. 
 The saturated time can indicate the congestion situation on certain part of the network. 
 
@@ -68,19 +68,18 @@ The saturated time can indicate the congestion situation on certain part of the 
 Figure~\ref{fig:wkld-network-traffic-stime} shows the aggregate traffic for terminal links, local and global channels 
 as well as the corresponding saturated time when 
 Workload~\Rmnum{1} is running on the dragonfly network with six different placement and routing configurations. 
+%explain CM
 When contiguous placement coupled with minimal routing(CM) is in use, 
-all the traffic are confined within the contiguously allocated groups, 
+all the traffic are confined within the consecutively allocated groups, 
 causing congestion on some routers along certain shortest paths from the source to the destination. 
 The congested routers are over-loaded with high volume of traffic going through their local and global channels, 
 shown as the blue dashed line in Figure~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
 In the meanwhile, the corresponding saturated time of their local and global channels are also the highest compared with other configurations, 
-shown as the blue dashed line in Figure~\ref{fig:global-channel-stime} and Figure~\ref{fig:local-channel-stime} .
-
-
-
+as shown in Figure~\ref{fig:global-channel-stime} and Figure~\ref{fig:local-channel-stime} .
+%explain CA and CPA
 When contiguous placement coupled with progressive adaptive routing (CPA) is in use, 
 the traffic would take non-shortest paths via intermediate routers to void congestion. 
-The congested routers along the shortest paths will not suffer the high volume of traffic as they used to. 
+The congested routers along the shortest paths will not suffer the high volume of traffic as they used to be. 
 The traffic through local and global channels are greatly reduced, 
 shown as the green dashed line in Figure~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
 The corresponding saturated time on local and global channels also drop a lot, 
@@ -89,7 +88,7 @@ The adaptive routing performs comparably compared with progressive adaptive rout
 thus CA is overlapped with CPA in the all the figures above.
 
 
-
+%Explain RM
 Random placement policy performs comparably with three different routing policies.
 Random placement can uniformly distribute MPI ranks over the network, 
 balance the traffic load over the network. 
@@ -97,11 +96,9 @@ Shown as the solid lines in Figure~\ref{fig:global-channel-traffic} and~\ref{fig
 no router suffers exceptional high volume of traffic on its local and global channels. 
 When the random placements coupled with minimal routing (RM), 
 the packets can avoid unnecessary intermediate forwarding as introduced by (progressive) adaptive routing, thus generating less traffic. 
-The blue solid line(RM) is lower than the red and green solid line (RA, RPA) in Figure~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
-
-
-
-Due to the same reason, 
+That's why blue solid line(RM) is lower than the red and green solid line (RA, RPA) in Figure~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
+%Explain RA, RPA
+For the same reason, 
 no router suffers exceptionally long saturated time on their global channels when random placement coupled (progressive) adaptive are in use, 
 shown as red and green solid lines in Figure~\ref{fig:global-channel-stime} and~\ref{fig:local-channel-stime}. 
 However, when random placement is couple with minimal routing, 
@@ -111,7 +108,7 @@ Since the minimal routing always chooses the shortest paths,
 increasing the possibility of congestion along those paths. 
 
 
-%terminal link traffic and busy time explanation
+% Explain terminal link traffic and busy time
 Figure~\ref{fig:terminal-link-traffic} is for the purpose of symmetry, 
 it shows the traffic per rank (aka traffic through terminal links), 
 which stay the same when different placement and routing configurations are in use. 
@@ -156,8 +153,6 @@ This again manifests the severe congestion caused by using contiguous placement 
 
 
 
-
-
 \subsection{Individual Application Analysis}
 \label{sec: workload-1 app analysis}
 
@@ -190,9 +185,7 @@ This again manifests the severe congestion caused by using contiguous placement 
 
 
 We study the performance of each application individually by isolating it from Workload~\Rmnum{1}.   
-Figure~\ref{fig:apps-commtime} shows the distribution of communication time of three applications in per rank manner, 
-when they running concurrently under six different placement and routing configurations listed in Table\ref{tab: placement routing configs}.
-
+Figure~\ref{fig:apps-commtime} shows the distribution of their communication time when running concurrently under different placement and routing configurations.
 As shown in Figure~\ref{fig:mg-commtime}, 
 MultiGrid takes the most communication time when it is running with contiguous placement and minimal routing (CM). 
 When contiguous placement coupled with adaptive or progressive adaptive routing (CA, CPA) are in use, 
