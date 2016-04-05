@@ -1,24 +1,28 @@
 \section{Hybrid Job Placement}
 \label{sec: hybrid placement}
 
-Based on our experiments with two workloads, the ``bullying" is inevitable when the dragonfly network is configured with random placement and (progressive) adaptive routing. 
-The precaution to stop the ``bullying" is to avoid network sharing between concurrently running jobs, 
-and contiguous placement and minimal routing could be an effective way. 
-However, the network would suffer severe local congestion and unbalanced utilization when contiguous placement and minimal routing is in use. 
-Running each job with dedicated routing policy is unrealistic, 
-since routing policy is part of system configuration which can not be changed on the fly upon job submission. 
-Assigning preferable allocation to each job based on its communication intensity is applicable for the batch scheduler with intelligent job placement policy. 
+Based on our experiments with Workloads~\Rmnum{1} and \Rmnum{2}, the ``bullying" behavior is
+exhibited when the dragonfly network is configured with random placement and
+(progressive) adaptive routing, and there is a large relative gap between the
+communication intensity of applications running on the network.
+As shown through our experimentation, contiguous placement policies give up too
+much in terms of congestion and load balance, and hence are an impractical
+solution. Further, running each job with a dedicated routing policy is unrealistic, 
+since routing policy is part of system configuration which can not be changed
+on the fly upon job submission and the policies of some jobs (adaptive)
+will still interfere with others.
+
+%Assigning preferable allocation to each job based on its communication intensity is applicable for the batch scheduler with intelligent job placement policy.
 
 
-
+\TODO{I'll revisit this later on. As Rob mentioned, I thought we weren't
+proposing a solution. (Could just need a language tweak).}
 We propose a hybrid job placement policy to assign each job with preferable allocation. 
 According to the hybrid placement policy, 
 the less communication-intensive jobs get contiguous allocation to partially avoid network sharing with the ``bully", 
 while the communication-intensive jobs get random allocation in order to share network resource with each other. 
 When Workload~\Rmnum{1} is running on the dragonfly network with hybrid placement policy, 
 AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocations. 
-The experiment results show that hybrid placement performs comparably as random placement for improving network performance and mitigates the degradation of AMG caused by the ``bullying".
-\footnote{The analysis about network traffic and saturated time are omitted in this section due to page limit.}
 
 
 %\subsection{Network Performance Analysis}
@@ -82,20 +86,14 @@ The experiment results show that hybrid placement performs comparably as random 
    \label{fig:hyb-plcmt-apps-commtime}
 \end{figure*}
 
-The communication time of each application under all placement and routing configurations are presented in Figure~\ref{fig:hyb-plcmt-apps-commtime}. 
-As shown in Figure~\ref{fig:hyb-plcmt-mg-commtime} and~{fig:hyb-plcmt-cr-commtime},
+For the purpose of brevity, we only present the
+communication time distribution of each application under all placement and routing configurations, including the hybrid placement method. These results are presented in Figure~\ref{fig:hyb-plcmt-apps-commtime}. 
+As shown in Figure~\ref{fig:hyb-plcmt-mg-commtime} and~\ref{fig:hyb-plcmt-cr-commtime},
 MultiGrid and CrystalRouter have similar performance with hybrid placement (HM, HA, HPA) as compared with random placement (RM, RA, RPA),
 since they are still assigned with random allocations in the hybrid placement policy. 
-The performance of AMG is significantly improved when hybrid placement configurations are in use. 
-The communication time of AMG are reduced by half when the placement policy switched from random to hybrid, 
-as shown in Figure \ref{fig:hyb-plcmt-amg-commtime}. 
-This is due the contiguous allocation assigned to AMG in the hybrid placement policy. 
-When being coupled with minimal routing, hybrid placement and contiguous placement have similar performance for AMG. 
-However, when (progressive) adaptive routing are in use, the traffic from MultiGrid and CrystalRouter still might be redirected to the routers serving AMG. 
-Since AMG is less communication-intensive and can not fully utilize network, 
-it is likely that the intermediate routers picked for the traffic from MultiGrid and CrystalRouter could be from AMG's groups. Both the communication-intensive and the less intensive application can benefit from hybrid placement coupled with (progressive) adaptive routing.
+While the performance of AMG under hybrid placement, shown in Figure~\ref{fig:hyb-plcmt-amg-commtime}, still exhibits significan communication interference on account of the other applications as opposed to the best contiguous placement policies, the effects are significantly reduced compared to a random-adaptive policy. We believe this to be a result of more AMG-specific traffic occupying a smaller set of routers/groups, both reducing the resulting probability of traffic entering them through adaptive routing and increasing the relative proportion of link utilization by AMG. Of course, this comes with the costs associated with contiguous allocation, in which AMG's traffic is less likely to load balance across multiple dragonfly groups.
 
-
+\TODO{Also need to check language here. I don't think the goal is to ``solve'' the bully behavior in this work.}
 The experiments with hybrid placement demonstrate that assigning each application with its preferable allocation can mitigate the negative effect of the ``bullying", in the meanwhile, 
 the network can still reach the optimal performance.
 Compared with random placement policy, hybrid placement can guarantee comparable network performance, by enabling network sharing between communication intensive applications .
