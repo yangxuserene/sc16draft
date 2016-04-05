@@ -3,39 +3,29 @@
 %\section{``Bully" become ``bullied"}
 \label{sec:workload-2}
 
-In this section, we will verify the observations made in the previous section 
-when Workload~\Rmnum{1} is running on the dragonfly network under different placement and routing configurations. 
-We conduct the same sets of experiments with Workload~\Rmnum{2}, which consists of sAMG, MultiGrid and CrystalRouter. 
-By replacing AMG with sAMG, we turn the ``bully" into the ``bullied".
-
+In this section, we use a different experimental configuration to verify and
+explore the observations made in the previous section. Specifically, we conduct
+the same sets of experiments through Workload~\Rmnum{2}, which consists of sAMG,
+MultiGrid and CrystalRouter. By replacing AMG with sAMG, we turn the ``bully"
+into the ``bullied".
 
 \subsection{Network Performance Analysis}
 \label{sec: workload-2 network analysis}
 
-
-Due to the replacement of AMG by sAMg, 
-the volume of data transfer in Workload~\Rmnum{2} is much higher than Workload~\Rmnum{1}, 
-thus the aggregate traffic on terminal links, local and global channels is greatly increased, 
-as shown in Figure~\ref{fig:synwkld-network-traffic-stime}. 
-The similar pattern in Figure~\ref{fig:wkld-network-traffic-stime} can be observed from Figure~\ref{fig:synwkld-network-traffic-stime}.
-Contiguous placement coupled with minimal routing(CM) results in congestion on some routers along certain shortest paths from the source to the destination. 
-Those congested routers are over-loaded with high volume of traffic going through their local and global channels, 
-shown as the blue dashed line in Figure~\ref{fig:synwkld-global-channel-traffic} and~\ref{fig:synwkld-local-channel-traffic}. 
-In the meanwhile, the corresponding saturated time of their local and global channels are also the highest compared with other configurations, 
-shown as the blue dashed line in Figure~\ref{fig:synwkld-global-channel-stime} and Figure~\ref{fig:synwkld-local-channel-stime}. 
-
-When contiguous placement coupled with (progressive) adaptive routing is in use, the high volume of traffic are redirected by taking the intermediate routers in other groups to void congestion. Therefore, the traffic on the global channels can be uniformly distributed over the network and the corresponding saturated time are greatly reduced, illustrated by the red and green dashed lines. However, (progressive) adaptive routing can not effectively balance the traffic load for local channels. As shown by the red and green dashed lines in Figure~\ref{fig:synwkld-local-channel-traffic}, some routers still have high volume of traffic on their local channels. 
-
-
-Random placement policy performs comparably with three different routing policies.
-By uniformly distributing MPI ranks over the network, 
-random placement can balance the traffic load over the network,
-illustrated by the solid lines in Figure~\ref{fig:synwkld-global-channel-traffic} and~\ref{fig:synwkld-local-channel-traffic}. 
-Progressive adaptive and adaptive routing generate more traffic than minimal routing
-as the packets take non-shortest paths via intermediate routers to avoid congestions, 
-thus the blue solid line(RM) is lower than the red and green solid line (RA, RPA).
-
-
+Figure~\ref{fig:synwkld-network-traffic-stime} shows aggregate traffic and
+saturation times for Workload~\Rmnum{2}, corresponding to
+Figure~\ref{fig:wkld-network-traffic-stime} in Workload~\Rmnum{1}.  Replacing
+AMG with sAMg results in greater aggregate traffic as well as more saturation
+than in Workload~\Rmnum{1}, but regardless, similar patterns can be observed.
+Contiguous placement with minimal routing results in load imbalances with
+respect to both traffic and saturation. The addition of adaptive routing
+alleviates these effects to some degree, particularly with respect to global
+channel usage, while trading off saturation in global channels for saturation in
+the local channels. \TODO{Did we make this observation in the earlier section?
+Should check...} Using random placement again shows roughly similar performance
+characteristics across routing configurations, with adaptive routing helping to
+balance aggregate load while increasing the aggregate traffic due to the related
+indirection.
 
 \begin{figure*}[t]
     \centering
@@ -119,19 +109,20 @@ thus the blue solid line(RM) is lower than the red and green solid line (RA, RPA
 \subsection{Individual Application Analysis}
 \label{sec: workload-2 app analysis}
 
-We study the performance of each application individually by isolating it from Workload~\Rmnum{2}.   
-Figure~\ref{fig:syn-apps-commtime} shows the distribution of communication time of three applications in per rank manner, 
-when they running concurrently under six different placement and routing configurations.
+We study the performance of each application individually in the same manner as
+in Section~\ref{sec: workload-1 app analysis}.
+Figure~\ref{fig:syn-apps-commtime} shows the communication time distributions of
+the ranks of the three applications, running concurrently in Workload~\Rmnum{2}.
 The ``bully" in Workload~\Rmnum{1} becomes the ``bullied" in Workload~\Rmnum{2}. 
 MultiGrid and CrystalRouter are the less communication-intensive applications in Workload~\Rmnum{2}. 
 When random placement coupled with (progressive) adaptive routing is in use, 
 MultiGrid and CrystalRouter suffer prolonged communication time, 
 as shown in Figure~\ref{fig:syn-mg-commtime}, \ref{fig:syn-cr-commtime}. 
-Whereas, sAMG benefits from random placement and (progressive) adaptive routing, 
-its communication time drops a lot compared with using contiguous placement, shown in Figure~\ref{fig:syn-samg-commtime}. 
-Contiguous placement coupled with minimal routing prevents applications from sharing network resource, 
-guaranteeing the performance of less communication-intensive applications like MultiGrid and CrystalRouter 
-and causing severe performance degradation to sAMG.
+Whereas, sAMG (Figure~\ref{fig:syn-samg-commtime}) benefits from random placement and (progressive) adaptive routing
+in a similar manner to CrystalRouter in Figure~\ref{fig:cr-commtime}.
+Contiguous placement coupled with minimal routing, while preventing the bully
+behavior, results in poor performance for all of the apps, except CrystalRouter,
+which we also expect is due to a higher degree of performance isolation.
 
 \begin{figure*}[t!]
     \centering
@@ -162,22 +153,19 @@ and causing severe performance degradation to sAMG.
 
 
 % explain the network status of sAMG, MG and CR
-We look into the network level to scrutinize the traffic through the routers serving each application. 
-The routers serving sAMG have high volume of traffic on both local and global channels when contiguous placement is in use, 
-shown as the dashed line in Figure~\ref{fig:syn-samg-lc-traffic},~\ref{fig:syn-samg-gc-traffic}.
-The random placement can alleviate the local congestion by uniformly distributing the traffic of sAMG over the network, getting more routers involved in serving sAMG, as illustrated by solid lines. 
-sAMG benefits from random placement by getting their high volume of traffic being redirected 
-from its over-loaded routers to the less busy routers in the network. 
-In this case, a majority of those less busy routers are belonging to MultiGrid and CrystalRouter.
+Once again, we look at the network-level system view to scrutinize the traffic through the routers serving each application. 
+The routers serving sAMG have a high volume of traffic on both local and global channels when contiguous placement is in use, 
+as shown in Figures~\ref{fig:syn-samg-lc-traffic} and \ref{fig:syn-samg-gc-traffic}.
+As in previous results, the use of random placement alleviates the local congestion by uniformly distributing the traffic of sAMG over the network, getting more routers involved in serving sAMG.
+In this case, a majority of those less busy routers are also serving MultiGrid and CrystalRouter.
 
 
 
 %MultiGrid and CrystalRouter are the less communication-intensive applications in Workload~\Rmnum{2}.
-When MultiGrid is running with contiguous placement, the serving routers have relatively small volume of traffic on their local and global channels, as shown by the dashed lines in Figure~\ref{fig:syn-mg-lc-traffic},~\ref{fig:syn-mg-gc-traffic}. When coupled with (progressive) adaptive routing, more routers are involved in serving MultiGrid, thus the red and green dashed lines are shorter than the blue one. 
-When random placement is in use, the MPI ranks of MultiGrid are randomly distributed across the network and sharing routers with other applications. The routers serving MultiGrid have much more traffic on their local and global channels, as shown by the solid lines in Figure~\ref{fig:syn-mg-lc-traffic},~\ref{fig:syn-mg-gc-traffic}. The increased traffic comes from the ``bully" sAMG. 
+When MultiGrid is running with contiguous placement, the serving routers have a comparatively small volume of traffic on their local and global channels, as shown in Figure~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. When coupled with (progressive) adaptive routing, more MultiGrid traffic traverses global channels, while more aggregate traffic is seen on the local channels due to the additional intermediate hops.
+When random placement is in use, the MPI ranks of MultiGrid are randomly distributed across the network and share routers with other applications. The routers serving MultiGrid have much more traffic on their local and global channels, as shown in Figures~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. The increased traffic comes largely from sAMG.
 
-CrystalRouter has more data transfer than MultiGrid. However, it still becomes the victim of the ``bully" sAMG. We can observe the similar pattern about CrystalRouter from Figure~\ref{fig:syn-cr-lc-traffic},~\ref{fig:syn-cr-gc-traffic} as MultiGrid. When random placement is in use, the routers serving CrystalRouter have more traffic going through.
-The extra traffic comes from from the ``bully" sAMG causing performance degradation to MultiGrid and CrystalRouter. 
+While CrystalRouter is more communication-intensive than MultiGrid, it still becomes the victim of the ``bully" sAMG. We can observe the similar pattern about CrystalRouter from Figure~\ref{fig:syn-cr-lc-traffic},~\ref{fig:syn-cr-gc-traffic} as MultiGrid. When random placement is in use, the routers serving CrystalRouter experience just as much, if not more, traffic than the contiguous placement in the extreme case, much of which originating from other applications (sAMG).
 
 
 \begin{figure*}[t]
@@ -225,14 +213,24 @@ The extra traffic comes from from the ``bully" sAMG causing performance degradat
 
 
 
-\subsection{Key Observations}
+\subsection{Observations}
 
-We have made the following observations from the study with Workload~\Rmnum{2}.
+\NOTE{rewrote this somewhat. The observations made were essentially the same
+as the previous section}
 
-\emph{The application becomes the ``bully" only because it has more amount of data transfer compared with its concurrently running peers.} The ``bully" takes advantage of the network resource belonging to other applications when network sharing is enabled by random placement and adaptive routing policy. 
+Revisiting the observations in Section~\ref{sec:workload-1-observations}, we
+find that those observations are held under this separate configuration.
+System-level performance is still much improved in terms of load-balancing.
+sAMG, being far and away the most communication-intensive application, benefits
+greatly from random placement, whereas in Workload~\Rmnum{1} it was effectively
+penalized for being less communication-intensive. CrystalRouter, being the
+comparatively less communication-intensive application in Workload~\Rmnum{2},
+experiences performance regressions in Workload~\Rmnum{2} under random-adaptive
+policies.
 
-\emph{The communication-intensive is a relative metric between concurrently running jobs.} MultiGrid and CrystalRouter are the ``bully" in Workload \Rmnum{1} and they become the ``bullied" when running concurrently with sAMG, since sAMG contributes the dominant portion of traffic in  in Workload \Rmnum{2}.
-
-
-
-
+Interestingly, in both Workload~\Rmnum{1} and \Rmnum{2}, MultiGrid experiences
+a more subtle performance behavior than the significant swings in performance
+seen in the other applications. These behaviors persisted across multiple runs
+with different random seeds. We are continuing to work towards understanding
+the root causes and implications of this behavior. \TODO{Is this a reasonable
+observation?}

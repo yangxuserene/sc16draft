@@ -317,6 +317,7 @@ We refers this phenomenon as AMG being ``bullied" by MultiGrid and CrystalRouter
 
 
 \subsection{Key Observations}
+\label{sec:workload-1-observations}
 
 In summary, based on the simulations presented in Section~\ref{sec: workload-1 network analysis} and \ref{sec: workload-1 app analysis}, we have made the following observations.
 
@@ -338,6 +339,6 @@ slowing down AMG's communication.
 \footnote{We have tried three different congestion ``sensing'' schemes in the literature for adaptive routing~\cite{won-prog-adaptive}. Although there are some variations between the results, none of the congestion sensing scheme prevent the ``bully'' behavior.}
 
 \emph{In contrast, performance consistency of each application is achieved only when contiguous placement and minimal routing are in use.} 
-As a corollary to the previous observation, router and group sharing among applications are guaranteed to be prohibited when using contiguous placement with minimal routing. This renders the ``bully'' behavior moot, though with the downside of significant performance degradation, so such approaches must be carefully considered.
+As a corollary to the previous observation, router and group sharing among applications are guaranteed to be prohibited when using contiguous placement with minimal routing (sharing of spare nodes within a group notwithstanding). This renders the ``bully'' behavior moot, though with the downside of significant performance degradation, so such approaches must be carefully considered.
 \TODO{not sure whether to keep this -- we don't really talk about performance consistency in the preceding text. It's a valid observation, though, so it should be somewhere...} 
 
