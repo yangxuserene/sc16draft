@@ -53,24 +53,24 @@ indirection.
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.8 in]{syn-wkld/gc-btime}
-        \caption{Global Channel Saturated Time}
+        \caption{Global Channel Saturation Time}
         \label{fig:synwkld-global-channel-stime}
     \end{subfigure}\hfill
      \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.8 in]{syn-wkld/lc-btime}
-        \caption{Local Channel Saturated Time}
+        \caption{Local Channel Saturation Time}
         \label{fig:synwkld-local-channel-stime}
     \end{subfigure}\hfill
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.8 in]{syn-wkld/tl-btime}
-        \caption{Terminal Link Saturated Time}
+        \caption{Terminal Link Saturation Time}
         \label{fig:synwkld-terminal-link-stime}
     \end{subfigure}%
-   \caption{Traffic and Saturated Time of different level of links in the dragonfly network when Workload \Rmnum{2} is running under six different placement and routing configurations.}
+   \caption{Aggregate traffic and saturation time for Workload~\Rmnum{2} under the configurations listed in Table~\ref{tab: placement routing configs}.}
    \label{fig:synwkld-network-traffic-stime}
 \end{figure*}
 
@@ -145,8 +145,7 @@ which we also expect is due to a higher degree of performance isolation.
         \caption{sAMG}
         \label{fig:syn-samg-commtime}
     \end{subfigure}%
-
-   \caption{The communication time of all ranks in each application. Three applications running concurrently on dragonfly network with different placement and routing configurations. The ``bully", sAMG, benefits from random placement and adaptive routing, while the ``bullied", MultiGrid and CrystalRouter, suffer performance degradation.}
+    \caption{Communication time distribution across application ranks in Workload~\Rmnum{2}. The ``bully", sAMG, benefits from random placement and adaptive routing, while the ``bullied", MultiGrid and CrystalRouter, suffer performance degradation.}
    \label{fig:syn-apps-commtime}
 \end{figure*}
 
@@ -207,7 +206,7 @@ While CrystalRouter is more communication-intensive than MultiGrid, it still bec
         \caption{sAMG Global Channel Traffic}
         \label{fig:syn-samg-gc-traffic}
     \end{subfigure}
-   \caption{The aggregate traffic go through the local and global channels of routers serving specific application. Compared with contiguous placement, More routers are involved in serving each application when random placement is in use.}
+    \caption{Aggregate workload traffic for routers serving specific applications. More routers are involved in serving each application when random placement is in use, compared to contiguous placement.}
    \label{fig:syn-3app-gc-traffic}
 \end{figure*}
 
