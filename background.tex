@@ -27,11 +27,8 @@ The routing policy refers to the strategy adopted to route a message (a stream o
 
 \textbf{Adaptive:} In this policy, the path a message takes will be adaptively chosen between minimal and non-minimal paths, depending on the congestion situation along those paths. For the non-minimal path, an intermediate router in a separate group will be randomly chosen. The message takes the intermediate router as a via point, connecting the source and destination router through two separate minimal paths. Adaptive routing can avoid hot-spots in the presence of congestion and collapse to minimal routing otherwise. 
 
-\textbf{Progressive Adaptive:} In this policy, the decision to route a packet minimally at each hop in the source group will be re-evaluated.
-% \TODO{packet granularity? flit granularity? It is papacket granularity}. 
-Any decision to route non-minimally at source router or at a subsequent hop is permanent and will not be re-evaluated~\cite{jiang}. 
-%\TODO{I thought PA does do re-evaluation? PA do re-evaluate in source group only}. 
-Progressive adaptive routing is capable of handling the case when a global channel is congested but the source router has not been informed yet~\cite{jiang}. The packet will take the non-minimal route only when the congestion is encountered. 
+\textbf{Progressive Adaptive:} As opposed to adaptive routing, the decision to route a packet (non-)minimally is re-evaluated for each packet generated in the source group, as opposed to once for the entire message; the re-evaulation does not occur in intermediate groups~\cite{jiang}.
+Progressive adaptive routing is capable of handling scenarios where the minimal route is congested but the source router has not been informed yet.
 
 \subsection{Job Placement on Dragonfly}
 \label{sec:placement-schemes}
