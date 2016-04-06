@@ -84,7 +84,7 @@ Two sets of parallel workloads are used in this study. Workload~\Rmnum{1} consis
 
 Each rank of each application is run on a dedicated node, following the recommended interpretation of the traces by the Design Forward team.
 
-With respect to random placement, we experiment with 50 sets of distinctive random allocation. The corresponding experimental results in the following sections are median chosen, which intended to eliminate the possibility of variation.
+As a significant portion of our experiments rely on nondeterministic behavior (random application allocation), we ran each configuration a total of 50 times with differing random seeds. We then chose a representative execution for presentation based on the median performance of the AMG application trace. While there is variation in repeated runs of the following experiments, the resulting trends and observations are representative of the full suite of experimentation.
 
 \begin{table}[ht]
 \begin{center}
