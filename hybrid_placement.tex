@@ -15,14 +15,23 @@ will still interfere with others.
 %Assigning preferable allocation to each job based on its communication intensity is applicable for the batch scheduler with intelligent job placement policy.
 
 
-\TODO{I'll revisit this later on. As Rob mentioned, I thought we weren't
-proposing a solution. (Could just need a language tweak).}
-We propose a hybrid job placement policy to assign each job with preferable allocation. 
-According to the hybrid placement policy, 
-the less communication-intensive jobs get contiguous allocation to partially avoid network sharing with the ``bully", 
-while the communication-intensive jobs get random allocation in order to share network resource with each other. 
-When Workload~\Rmnum{1} is running on the dragonfly network with hybrid placement policy, 
-AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocations. 
+\TODO{Is this reasonable?}
+
+As a natural extension of our observations, one question that arises is whether
+we can combine aspects from both random and contiguous allocation policies in
+which each application receives the performance benefits from system load
+balancing while avoiding the ``bully'' behavior. As an initial exploration of
+that question, we set up a mock hybrid job placement policy, in which less
+communication-intensive jobs receive contiguous allocations to avoid the
+``bully" effect, while the communication-intensive jobs are allocated randomly
+in order to distribute the communication load. For Workload~\Rmnum{1}, this
+means AMG gets a contiguous allocation while MultiGrid and CrystalRouter get
+random allocations. Note that we do not consider challenges inherent in
+designing an allocation policy for production usage, such as backfilling,
+reserving large contiguous sets of nodes, determining a metric for
+communication intensity, etc., preferring a restricted-scope experiment
+looking at the design space of dragonfly allocation policies in light of our experimental
+observations.
 
 
 %\subsection{Network Performance Analysis}
@@ -82,24 +91,15 @@ AMG gets contiguous allocation, MultiGrid and CrystalRouter get random allocatio
         \caption{AMG Communication Time}
         \label{fig:hyb-plcmt-amg-commtime}
     \end{subfigure}
-   \caption{Application communication time. Workload~\Rmnum{1} is running with all placement and routing configurations.}
+   \caption{Application communication time. Workload~\Rmnum{1} is running with all placement and routing configurations. Methods prefixed with ``H'' represent the hybrid allocation approach.}
    \label{fig:hyb-plcmt-apps-commtime}
 \end{figure*}
 
 For the purpose of brevity, we only present the
 communication time distribution of each application under all placement and routing configurations, including the hybrid placement method. These results are presented in Figure~\ref{fig:hyb-plcmt-apps-commtime}. 
 As shown in Figure~\ref{fig:hyb-plcmt-mg-commtime} and~\ref{fig:hyb-plcmt-cr-commtime},
-MultiGrid and CrystalRouter have similar performance with hybrid placement (HM, HA, HPA) as compared with random placement (RM, RA, RPA),
-since they are still assigned with random allocations in the hybrid placement policy. 
-While the performance of AMG under hybrid placement, shown in Figure~\ref{fig:hyb-plcmt-amg-commtime}, still exhibits significan communication interference on account of the other applications as opposed to the best contiguous placement policies, the effects are significantly reduced compared to a random-adaptive policy. We believe this to be a result of more AMG-specific traffic occupying a smaller set of routers/groups, both reducing the resulting probability of traffic entering them through adaptive routing and increasing the relative proportion of link utilization by AMG. Of course, this comes with the costs associated with contiguous allocation, in which AMG's traffic is less likely to load balance across multiple dragonfly groups.
+MultiGrid and CrystalRouter exhibit similar performance in both hybrid and random placement, as nodes are being placed randomly in each case.
+While the performance of AMG under hybrid placement, shown in Figure~\ref{fig:hyb-plcmt-amg-commtime}, still appears to exhibit significant communication interference on account of the other applications as opposed to the best contiguous placement policies, the effects are significantly reduced compared to a random-adaptive policy. We believe this to be a result of more AMG-specific traffic occupying a smaller set of routers/groups, both reducing the probability of traffic entering them through adaptive routing and increasing the relative proportion of link utilization by AMG. Of course, this comes with the costs associated with contiguous allocation, in which AMG's traffic is less likely to load balance across multiple dragonfly groups.
 
-\TODO{Also need to check language here. I don't think the goal is to ``solve'' the bully behavior in this work.}
-The experiments with hybrid placement demonstrate that assigning each application with its preferable allocation can mitigate the negative effect of the ``bullying", in the meanwhile, 
-the network can still reach the optimal performance.
-Compared with random placement policy, hybrid placement can guarantee comparable network performance, by enabling network sharing between communication intensive applications .
-It can also mitigate the performance degradation of less communication-intensive applications, 
-by assigning them with contiguous allocation to partially avoid network sharing.
-Unlike random placement indulging the ``bullying", hybrid placement can restrain it to some extent.
-Hybrid placement policy is worthy of consideration for the adoption on dragonfly systems in the future.
-
-
+\TODO{How's this?}
+These initial experiments demonstrate some degree of benefit derived from using a hybrid approach, helping to alleviate the ``bully'' effect while retaining the performance of communication-intensive applications. However, the behavior is still not ideal in this case -- AMG's communications still experience performance degradation versus the contiguous configurations. Hence, more work in this area is needed to fully understand the intricate relationships between job scheduling and system/application communication behavior to approach optimal network utilization and application performance in high-radix networks.
