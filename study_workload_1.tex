@@ -84,13 +84,13 @@ In most cases for this study, the random placement policy behaves similarly acro
 Random placement uniformly distributes MPI ranks over the network, 
 balancing the resulting traffic load. 
 As shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}, 
-no router suffers exceptionally high volume of traffic on its local and global channels. 
+no router experiences an exceptionally high volume of traffic on its local and global channels. 
 When random placement is coupled with minimal routing (RM), less traffic is generated on account of
 the packets avoiding intermediate forwarding. At the same time, there is still significant congestion on local channels due to the lack of ability of packets to traverse non-minimal routes, falling into the same trap as the contiguous-minimal configuration.
 \TODO{check this}
 %Explain RA, RPA
 Coupled with (progressive) adaptive routing,
-no router suffers exceptionally long saturation times on their global channels when random placement is in use, 
+saturation times are effectively minimized on both global and local channels when random placement is in use, 
 as shown in Figure~\ref{fig:global-channel-stime} and~\ref{fig:local-channel-stime}. Further, in comparison to contiguous allocations, random allocations result in a more evenly distributed load on the resulting channels, as expected.
 
 % Explain terminal link traffic and busy time
@@ -175,7 +175,7 @@ congestion.
 For the MultiGrid and CrystalRouter applications (Figures~\ref{fig:mg-commtime} and
 \ref{fig:cr-commtime}, respectively), using random allocation with any routing
 method results in performance improvements over contiguous allocations, which is
-largely in agreement with previous work (see Section~\ref{sec:related work}).
+largely in agreement with the literature (see Section~\ref{sec:related work}).
 \TODO{did previous work make this strong a claim?}. The high-radix nature of the
 network topology ensures that the benefits from the resulting load balancing
 outweigh the costs of extra hops for point-to-point messages.
@@ -277,62 +277,35 @@ distribution, with some variation on the margins due to the randomness.
 
 MultiGrid shows roughly similar behavior for contiguous allocations, but
 different behavior along the local channels. There is a significant variation in
-the traffic distribution of local channels, even with adaptive routing, which
-should have the net effect of distributing said traffic.
+the traffic distribution on local channels, even with adaptive routing, which
+nevertheless has the net effect of reducing the maximal traffic load.
 
-AMG shows a similar level of variation to MultiGrid in this case. However, it is
-the least communication-intensive application of the three by a significant
-factor. In effect, the routers serving the AMG application are being utilized by
-MultiGrid and CrystalRouter, resulting in AMG traffic queuing up in their
-respective routers. Since the relative traffic is so low, AMG ends up
-experiencing significant slowdowns due to this effect. We refer to this phenomenon
-as AMG being ``bullied" by MultiGrid and CrystalRouter.
-
-\begin{comment} JJ - some more reorg here, also a few of the observations don't match the data
-
-The routers serving MultiGrid and CrystalRouter have a high traffic volume on both local and global channels when contiguous placement is in use, 
-shown as the dashed line in Figure~\ref{fig:mg-lc-traffic},~\ref{fig:mg-gc-traffic} and Figure~\ref{fig:cr-lc-traffic},~\ref{fig:cr-gc-traffic}. 
-On the other hand, the random placement can uniformly distribute the traffic of MultiGrid and CrystalRouter over the network, 
-alleviate local congestion and balance the traffic load among all routers, 
-shown as the solid lines in Figure~\ref{fig:mg-lc-traffic},~\ref{fig:mg-gc-traffic} and Figure~\ref{fig:cr-lc-traffic},~\ref{fig:cr-gc-traffic}. 
-MultiGrid and CrystalRouter benefit from random placement by getting their high volume of traffic being redirected 
-from their over-loaded routers to the less busy routers in the network. 
-In this case, a majority of those less busy routers are belonging to AMG.
-
-
-Since AMG is less communication-intensive, 
-the routers serving AMG have small volume of traffic on local and global channels when the contiguous placement is use, 
-shown as the dashed line in Figure~\ref{fig:amg-lc-traffic},~\ref{fig:amg-gc-traffic}. 
-When random placement is in use, 
-more routers are involved in serving AMG, 
-and the traffic skyrockets on the local and global channels, 
-shown as the solid lines in Figure~\ref{fig:amg-lc-traffic},~\ref{fig:amg-gc-traffic}. 
-The increased traffic comes from the communication-intensive MultiGrid and CrystalRouter. 
-AMG behaves abnormally when random placement is in use 
-because the routers serving AMG have to take the traffic from MultiGrid and CrystalRouter. 
-The extra traffic from the other communication-intensive applications 
-takes advantage the network resources belonging to AMG and slows down AMG's communication. 
-We refers this phenomenon as AMG being ``bullied" by MultiGrid and CrystalRouter.
-\end{comment}
-
+AMG shows a similar level of variation to MultiGrid in this case. However, it
+is the least communication-intensive application of the three by a significant
+factor. As evidenced by the wide gap between the router traffic in contiguous
+and random placement configurations, the routers serving the AMG application
+are being utilized by MultiGrid and CrystalRouter, resulting in AMG traffic
+contending with traffic of other applications. The net effect, as shown in
+Figure~\ref{fig:amg-commtime}, is significant slowdowns for AMG.
+We refer to this phenomenon as AMG being ``bullied" by MultiGrid and CrystalRouter.
 
 \subsection{Key Observations}
 \label{sec:workload-1-observations}
 
-In summary, based on the simulations presented in Section~\ref{sec: workload-1 network analysis} and \ref{sec: workload-1 app analysis}, we have made the following observations.
+In summary, based on the simulations presented in Section~\ref{sec: workload-1 network analysis} and \ref{sec: workload-1 app analysis}, we make the following observations.
 
 \emph{System-level performance is significantly improved when random placement and adaptive routing are in use.} 
 Random placement can uniformly distribute MPI ranks of application over the network, 
 and adaptive routing can redirect the traffic from congested routers to other less busy routers. 
 The combination of the two minimizes hot-spots and promotes load-balanced distribution. The resulting increased number of hops per message was not a significant detriment in comparison. This matches what is seen in the literature.
 
-\emph{The performance of communication-intensive jobs in the system improves using a random allocation policies}
+\emph{The performance of communication-intensive jobs in the system improves through use of random allocation policies.}
 Both CrystalRouter and MultiGrid, the two most communication-intensive jobs,
 both saw improved distributions of communication performance when moving to a
 random allocation. Again, this matches what is seen in the literature.
 
 \emph{The performance of less communication-intensive jobs in workload regresses when random placement and adaptive routing are in use.} 
-AMG in Workload~\Rmnum{1} are ``bullied" by its concurrently running communication-intensive peers, MultiGrid and CrystalRouter.
+AMG in Workload~\Rmnum{1} is ``bullied" by its concurrently running communication-intensive peers, MultiGrid and CrystalRouter.
 AMG shares routers and groups with MultiGrid and CrystalRouter under random placement. 
 The traffic from MultiGrid and CrystalRouter is (re)directed to the routers that serve AMG, 
 slowing down AMG's communication. 
