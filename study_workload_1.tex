@@ -5,7 +5,7 @@
 
 The study of Workload~\Rmnum{1} consists of two parts. First, we analyze the overall network performance when Workload~\Rmnum{1} is running under different placement and routing configurations. Second, we isolate each application from the workload and analyze its performance on both a per-rank basis as well as by considering router traffic resident to application ranks. The analysis allows us to identify the ``bully'' in Workload~\Rmnum{1}.
 
-\TODO{Add in a few words across the section (not here) on how previous work compares as you go through the results.}
+%\TODO{Add in a few words across the section (not here) on how previous work compares as you go through the results.}
 
 \subsection{Network Performance Analysis}
 \label{sec: workload-1 network analysis}
@@ -73,9 +73,11 @@ Similarly, the saturation time for both local and global channels are also the h
 When contiguous placement is coupled with adaptive (CA) and progressive adaptive (CPA) routing, 
 traffic is able to take non-minimal paths via intermediate routers, helping to alleviate congestion along the minimal paths. 
 The resulting traffic through the most utilized local and global channels are greatly reduced, 
-as shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. \TODO{Traffic is not substantially reduced for local channel traffic}.
+as shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
+%\TODO{Traffic is not substantially reduced for local channel traffic}.
 Similarly, the corresponding saturation time on local and global channels is also reduced significantly, 
-demonstrating the efficacy of adaptive routing in this case. \TODO{How do we explain the similar distribution of traffic on local channels compared to the dissimilar distribution of saturation time?}
+demonstrating the efficacy of adaptive routing in this case. 
+%\TODO{How do we explain the similar distribution of traffic on local channels compared to the dissimilar distribution of saturation time?}
 For contiguous placement, we see no perceptible difference in behavior between adaptive and progressive adaptive routing.
 
 
@@ -87,7 +89,7 @@ As shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-
 no router experiences an exceptionally high volume of traffic on its local and global channels. 
 When random placement is coupled with minimal routing (RM), less traffic is generated on account of
 the packets avoiding intermediate forwarding. At the same time, there is still significant congestion on local channels due to the lack of ability of packets to traverse non-minimal routes, falling into the same trap as the contiguous-minimal configuration.
-\TODO{check this}
+%\TODO{check this}
 %Explain RA, RPA
 Coupled with (progressive) adaptive routing,
 saturation times are effectively minimized on both global and local channels when random placement is in use, 
@@ -176,7 +178,8 @@ For the MultiGrid and CrystalRouter applications (Figures~\ref{fig:mg-commtime} 
 \ref{fig:cr-commtime}, respectively), using random allocation with any routing
 method results in performance improvements over contiguous allocations, which is
 largely in agreement with the literature (see Section~\ref{sec:related work}).
-\TODO{did previous work make this strong a claim?}. The high-radix nature of the
+%\TODO{did previous work make this strong a claim? yes, that's the finding in Nik and Abi's SC papers}. 
+The high-radix nature of the
 network topology ensures that the benefits from the resulting load balancing
 outweigh the costs of extra hops for point-to-point messages.
 
@@ -313,5 +316,5 @@ slowing down AMG's communication.
 
 \emph{In contrast, performance consistency of each application is achieved only when contiguous placement and minimal routing are in use.} 
 As a corollary to the previous observation, router and group sharing among applications are guaranteed to be prohibited when using contiguous placement with minimal routing (sharing of spare nodes within a group notwithstanding). This renders the ``bully'' behavior moot, though with the downside of significant performance degradation, so such approaches must be carefully considered.
-\TODO{not sure whether to keep this -- we don't really talk about performance consistency in the preceding text. It's a valid observation, though, so it should be somewhere...} 
+%\TODO{not sure whether to keep this -- we don't really talk about performance consistency in the preceding text. It's a valid observation, though, so it should be somewhere...} 
 
