@@ -1,25 +1,25 @@
 \section{Introduction}
 \label{sec:intro}
 
-Low-latency and high-bandwidth interconnect networks play a critical role in improving HPC system performance. 
-The high-radix, low-diameter dragonfly topology can lower the extension cost of the interconnect, improve network bandwidth and reduce packet latency \cite{dally-dragonfly}, 
-making it a very promising choice for building petaflop and beyond supercomputers. 
+Low-latency and high-bandwidth interconnect networks play a critical role in ensuring HPC system performance. 
+The high-radix, low-diameter dragonfly topology can lower \NOTE{the extension cost?} of the interconnect, improve network bandwidth and reduce packet latency \cite{dally-dragonfly}, 
+making it a very promising choice for building supercomputers with millions of cores.
 Even with such powerful networks, 
-intelligent job placement is still of paramount importance to the efficient use of dragonfly connected systems~\cite{bhatele2015, jain-sc14}. 
+intelligent job placement is of paramount importance to the efficient use of dragonfly connected systems~\cite{bhatele2015, jain-sc14}. 
 %An ideal job placement policy should not only load balance the network 
 %but also guarantee the performance of every single application by minimizing the inevitable interference on the dragonfly network.  
 
 Recent studies suggest that random job placement coupled with adaptive routing can alleviate local congestion, eliminate hot-spots and reach load-balance for dragonfly networks~\cite{jain-sc14, bhatele-sc11, brandt2014}. 
-These works explore the possible job placement and routing configurations that could optimize the overall network performance without scrutinizing the possible interference.
-In this paper, we study the interference among concurrently running applications on dragonfly networks when different job placement and routing policies are in use. 
-Our analysis focus on the performance of every single application in the presence of interference . 
+These works explore the possible job placement and routing configurations that could optimize the overall network performance without examining how different configurations impact the progress of individual applications.
+In this paper, we study the implications of contention for shared network links in the context of multiple HPC applications running on dragonfly systems when different job placement and routing configurations are in use.
+Our analysis focus on the overall network performance as well as the performance of every single application in the presence of network contention.
 
 %We have observed that when running concurrently on the dragonfly network, applications interfere with each other and the less communication-intensive applications are ``bullied" by the communication-intensive ones. The ``bully" applications get great performance improvement at the cost of performance degradation to the ``bullied" applications. We choose three representative applications from the DOE Design Forward Project~\cite{designforwardwebpage} to study the root cause of the ``bullying" with simulation on CODES, an high-fidelity, packet-level HPC network simulation toolkit~\cite{codes}. 
 
 
-We choose three representative applications from the DOE Design Forward Project~\cite{designforward-webpage} to analyze the interference among them. Our study is based on the simulation with CODES, an high-fidelity, packet-level HPC network simulation toolkit~\cite{codes}.
-For each application, we examine it with two job placement policies and three routing policies.
-We make the following interesting observations through extensive simulations.
+We choose three representative HPC applications from the DOE Design Forward Project~\cite{designforward-webpage} to analyze the interference among them. Our study is based on the simulation with CODES, a high-fidelity, flit-level HPC network simulation toolkit~\cite{codes}.
+For each application, we examine its performance with two job placement policies and three routing policies.
+We make the following observations through extensive simulations.
 
 
 %In this work, we study the interference between concurrently running jobs on dragonfly networks with different job placement and routing policies. We use CODES, an HPC network simulation toolkit with high fidelity and excellent scalability for packet level simulation \cite{codes}. Unlike much existing work that rely on synthetic workloads, we use traces of three representative applications from the DOE Design Forward Project \cite{designforwardwebpage}. The advantage of using real application traces is straight forward: these traces can capture detailed application communication behaviors that are omitted in synthetic workload for simplification. Applications are usually distinctive from each other in data transfer amount, communication pattern, operation dependency etc., which can be impractical to reproduce in a synthetic workload.
@@ -29,15 +29,16 @@ We make the following interesting observations through extensive simulations.
 
 \begin{itemize}
    
-    \item Concurrently running applications on a dragonfly network interfere with each other when they share network resources. Communication-intensive applications ``bully" their less intensive peers and obtain performance improvement at the expense of less intensive ones suffering performance degradation. 
+    \item Concurrently running applications on a dragonfly network interfere with each other when they share network resources. Communication-intensive applications ``bully" their less intensive peers and obtain performance improvement at the expense of less intensive ones. 
     
     \item Random placement can improve the performance of communication-intensive applications by enabling network resource sharing, though it introduces interference causing performance degradation to the less intensive applications.
     
-    \item Contiguous placement can guarantee the consistency performance of less communication-intensive applications by prohibiting network resource sharing, though it results in local network congestion and unbalanced network utilization.
+   \item Contiguous placement is beneficial to the consistency performance of less communication-intensive applications by prohibiting network resource sharing, because it reduces the opportunities for traffic from other applications to be loaded on links that serve as minimal routes for the less intensive application.
+    
     
 \end{itemize}
 
-Based on the aforementioned key observations, the ideal job placement policy for the workload running dragonfly system should be specific to the application communication intensity. Thus, we propose a hybrid job placement, which assigns random allocations to the communication-intensive applications and contiguous allocations to the less intensive ones. Our experiment results show that hybrid job placement can mitigate the performance degradation for the less communication-intensive applications without affecting the performance of communication-intensive applications.
+Based on the aforementioned key observations, the ideal job placement policy for the workload running dragonfly system should be specific to the application communication intensity.\NOTE{we are not proposing new placement policy, we explore a possible better alternative. } Thus, we investigate a hybrid job placement, which assigns random allocations to the communication-intensive applications and contiguous allocations to the less intensive ones. Our experiment results show that hybrid job placement can mitigate the performance degradation for the less communication-intensive applications without affecting the performance of communication-intensive applications.
 %\emph{The random placement and adaptive routing are preferable to communication-intensive jobs, whereas contiguous placement and minimal routing are in favor of less intensive jobs.} 
 To the best of our knowledge, using real application traces from production systems for the study of job interference on dragonfly networks has not been reported so far. We believe the observations and new placement policy presented in this paper are valuable to the HPC community.
 %We believe the observations and new placement policy presented in this paper are valuable to a number of communities including HPC computing centers, system software developers, and system administrators. 
