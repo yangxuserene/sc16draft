@@ -3,7 +3,7 @@
 %\section{Identify the ``Bully"}
 \label{sec:workload-1}
 
-The study of Workload~\Rmnum{1} consists of two parts. First, we analyze the overall network performance when Workload~\Rmnum{1} is running under different placement and routing configurations. Second, we isolate each application from the workload and analyze its performance on both a per-rank basis as well as by considering router traffic resident to application ranks. The analysis allows us to identify the ``bully'' in Workload~\Rmnum{1}.
+The study of Workload~\Rmnum{1} consists of two parts. First, we analyze the overall network performance when Workload~\Rmnum{1} is running under different placement and routing configurations. Second, we isolate each application from the workload and analyze its performance both on a per-rank basis as well as by considering router traffic resident to application ranks. The analysis allows us to identify the ``bully'' in Workload~\Rmnum{1}.
 
 %\TODO{Add in a few words across the section (not here) on how previous work compares as you go through the results.}
 
@@ -82,7 +82,7 @@ For contiguous placement, we see no perceptible difference in behavior between a
 
 
 %Explain RM
-In most cases for this study, the random placement policy behaves similarly across routing policies.
+In most cases, the random placement policy behaves similarly across routing policies.
 Random placement uniformly distributes MPI ranks over the network, 
 balancing the resulting traffic load. 
 As shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}, 
@@ -99,7 +99,7 @@ as shown in Figure~\ref{fig:global-channel-stime} and~\ref{fig:local-channel-sti
 Figures~\ref{fig:terminal-link-traffic} and \ref{fig:terminal-link-stime} are presented for the purpose of symmetry, 
 showing the traffic per terminal link as well as the saturation time experienced at each terminal.
 The terminal traffic distribution corresponds directly to application traffic, as we are using one MPI rank per node (terminal).
-However, saturation times are different, resulting from the aforementioned network behavior. Particularly, contiguous allocations coupled with minimal routing results in a ``long-tail`` distribution of saturation time.
+However, saturation times are different, resulting from the aforementioned network behavior. Particularly, contiguous allocations coupled with minimal routing results in a ``long-tail" distribution of saturation time.
 
 %===========================================================
 %from the workload perspective to study the network performance. 
@@ -187,7 +187,7 @@ The AMG application (Figure~\ref{fig:amg-commtime}), however, shows markedly
 different behavior when using random allocation. Random allocation with minimal
 routing results in worse performance than contiguous-adaptive configurations,
 while using adaptive routing results in significant performance regressions. As
-this is a counterintuitive result not reached by other works, we investigate
+this is a counterintuitive result not discussed in other works, we investigate
 further.
 
 \begin{comment} JJ - doing some reorg, so keeping the old text just in case
@@ -273,9 +273,9 @@ used in the contiguous and random allocation configurations, as each router
 serves multiple terminals.
 
 The system behavior with respect to the CrystalRouter application arguably best
-matches expectations. Use of contiguous allocations result in a subset of
+matches expectations. Use of contiguous allocations results in a subset of
 channels with a significant traffic load while a significant portion are
-unused. Use of random allocations result in a comparatively smoother traffic
+unused. Use of random allocations results in a comparatively smoother traffic
 distribution, with some variation on the margins due to the randomness.
 
 MultiGrid shows roughly similar behavior for contiguous allocations, but
