@@ -3,10 +3,8 @@
 \section{Methodology}
 \label{sec: methodology}
 
-Configurable dragonfly networks that allow us to perform the exploration presented in this paper are hard to come by for the time being. Even with access to systems with such networks, job placement and routing policies are part of system configuration, which is impossible for user to make changes at will~\cite{jain-sc14, bhatele-sc11, zhou-ipdps-2015, jokanovic-ipdps-2015}. Therefore, we resort to simulation in our work.
+Configurable dragonfly networks that allow us to perform the exploration presented in this paper are hard to come by for the time being. Even with access to systems with such networks, job placement and routing policies are part of system configuration, which is impossible for users to make changes at will~\cite{jain-sc14, bhatele-sc11, zhou-ipdps-2015, jokanovic-ipdps-2015}. Therefore, we resort to simulation in our work.
 
-
-%It is difficult to experiment with concurrently running jobs on HPC systems~\cite{zhou-ipdps-2015}\cite{jain-sc14}\cite{bhatele-sc11}\cite{jokanovic-ipdps-2015}. One reason is that job placement and routing policies are part of system configuration, which is impossible for user to make changes at will. Another reason is that it is unrealistic to reserve the system exclusively to run the same batch of jobs with desired placement and routing configurations and compare the results. The third reason is that configurable dragonfly networks that allow us to perform the exploration presented in this paper are hard to come by for the time being. Therefore, we resort to simulation in our work.
 
 \subsection{Simulation Tool}
 \label{sec:simulation-tool}
@@ -32,7 +30,7 @@ We use a trace-driven approach to workload generation, choosing in particular th
 \subsection{System Configuration}
 \label{sec: simulation configuration}
 
-The parameters for building the dragonfly network studied in our work are informed by the model proposed by Kim et al.~\cite{kim-micro}. 
+The parameters for building the dragonfly network studied in our work are chosen based on the model proposed by Kim et al.~\cite{kim-micro}. 
 In our dragonfly network, each group consists of $a = 8$ routers connected via all-to-all local channels. For each router, there are $p = 4$ compute nodes attached to it via terminal links. Each router also has $h = 4$ global channels used for intergroup connections. The radix of each router is hence $k = a+h+p-1 = 15$. 
 The total number of groups is $g = a*h+1 = 33 $ and the total number of compute nodes is $N = p*a*g = 1056$. 
 %\NOTE{What's the resulting router radix? What's the classic $a,h,p$ (or whatever they are :) parameters? done! } 
@@ -71,7 +69,7 @@ Our analysis focuses on the following metrics:
             
     \item \textbf{Network Saturation Time:} The saturation time refers to the time period when the buffer of a certain port in the router is full. We analyze the saturation time of ports corresponding to terminal links, local and global channels. The saturated time indicates the congestion level of routers. 
     
-    \item \textbf{Communication Time:} The communication time of each MPI rank refers to the time it spends in completing all its message exchanges with other ranks. Due to our use of simulation, we are able to measure the absolute (simulated) time a message takes to reach its destination. The performance of each application is measured by the communication time distribution across all its ranks.    
+    \item \textbf{Communication Time:} The communication time of each MPI rank refers to the time it spends in completing all its message exchanges with other ranks. Due to the use of simulation, we are able to measure the absolute (simulated) time a message takes to reach its destination. The performance of each application is measured by the communication time distribution across all its ranks.    
     
     \end{itemize}
 
@@ -88,7 +86,7 @@ As a significant portion of our experiments rely on nondeterministic behavior (r
 
 \begin{table}[ht]
 \begin{center}
-\caption{Application Summaries}
+\caption{Summary of Applications}
 \label{tab:apps-detail}
 \begin{tabular}{l c c c }
 \toprule % Top horizontal line
