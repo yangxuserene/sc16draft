@@ -37,7 +37,7 @@ Progressive adaptive routing is capable of handling scenarios where the minimal 
 \subsection{Job Placement on Dragonfly}
 \label{sec:placement-schemes}
 
-For a parallel application requiring multiple compute nodes, the job placement policy refers to the way of assigning the required number of nodes to the application by system software such as the batch scheduler~\cite{xu-cluster14}. In this work, we study two alternative placement policies considered by the community for dragonfly systems: 
+For a parallel application requiring multiple compute nodes, the job placement policy refers to the way of assigning the required number of nodes to the application by system software such as the batch scheduler~\cite{tsafrir-tpds-2007}. In this work, we study two alternative placement policies considered by the community for dragonfly systems: 
 
 \textbf{Random Placement:} In this policy, an application gets the required number of nodes randomly from the available nodes in the system. As illustrated in Figure~\ref{fig:dragonfly-overview}, $J1$ is randomly allocated nodes attached to different routers in different groups. Routers may be shared by different applications and more routers are involved in serving each application when random placement is in use. Random placement can distribute the tasks of an application uniformly across the network to avoid the possible local congestion. 
 
