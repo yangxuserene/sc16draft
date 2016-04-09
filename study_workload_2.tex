@@ -14,10 +14,10 @@ into the ``bullied".
 
 Figure~\ref{fig:synwkld-network-traffic-stime} shows aggregate traffic and
 saturation times for Workload~\Rmnum{2}, corresponding to
-Figure~\ref{fig:wkld-network-traffic-stime} in Workload~\Rmnum{1}.  Replacing
-AMG with sAMg results in greater aggregate traffic as well as more saturation
+Figure~\ref{fig:wkld-network-traffic-stime} in Workload~\Rmnum{1}. Replacing
+AMG with sAMG results in greater aggregate traffic as well as more saturation
 than in Workload~\Rmnum{1}, but regardless, similar patterns can be observed.
-Contiguous placement with minimal routing results in load imbalances with
+Contiguous placement with minimal routing results in load imbalance with
 respect to both traffic and saturation. The addition of adaptive routing
 alleviates these effects to some degree, particularly with respect to global
 channel usage, while trading off saturation in global channels for saturation in
@@ -115,13 +115,13 @@ the ranks of the three applications, running concurrently in Workload~\Rmnum{2}.
 The ``bully" in Workload~\Rmnum{1} becomes the ``bullied" in Workload~\Rmnum{2}. 
 MultiGrid and CrystalRouter are in this instance the less communication-intensive applications. 
 With random placement and (progressive) adaptive routing, 
-MultiGrid and CrystalRouter experience prolonged communication time, 
+both MultiGrid and CrystalRouter experience prolonged communication time, 
 as shown in Figure~\ref{fig:syn-mg-commtime}, \ref{fig:syn-cr-commtime}. 
 On the other hand, sAMG (Figure~\ref{fig:syn-samg-commtime}) benefits from those configurations
 in a similar manner to CrystalRouter in Workload~\Rmnum{1}.
-Contiguous placement coupled with minimal routing, while preventing the bully
+Contiguous placement coupled with minimal routing, while preventing the ``bully"
 behavior, results in poor performance for all of the applications except CrystalRouter,
-which we also expect is due to a higher degree of network isolation.
+which we expect is due to a higher degree of network isolation.
 
 \begin{figure*}[t!]
     \centering
@@ -164,7 +164,7 @@ In this case, a majority of those less busy routers are also serving MultiGrid a
 %When MultiGrid is running with contiguous placement, the serving routers have a comparatively small volume of traffic on their local and global channels, as shown in Figure~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. When coupled with (progressive) adaptive routing, more MultiGrid traffic traverses global channels, while more aggregate traffic is seen on the local channels due to the additional intermediate hops.
 %When random placement is in use, the MPI ranks of MultiGrid are randomly distributed across the network and share routers with other applications. The routers serving MultiGrid have much more traffic on their local and global channels, as shown in Figures~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. The increased traffic comes largely from sAMG. \TODO{can shorten this}
 
-MultiGrid in Workload~\Rmnum{2} appears most similar to AMG in Workload~\Rmnum{1} when considering resident channel behavior, as shown in Figures~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. There is a large gap in traffic volume between the contiguous and random placement approaches, due to other applications (sAMG in particular) utilizing the same links. CrystalRouter in Workload~\Rmnum{2} additionally experiences more load on its channels using random allocation configurations, as shown in Figure~\ref{fig:syn-cr-lc-traffic} and \ref{fig:syn-cr-lc-traffic}. However, the maximal load under random allocation is closer to that seen in contiguous allocations as compared to MultiGrid.
+MultiGrid in Workload~\Rmnum{2} is similar to AMG in Workload~\Rmnum{1} when considering resident channel behavior, as shown in Figures~\ref{fig:syn-mg-lc-traffic} and \ref{fig:syn-mg-gc-traffic}. There is a large gap in traffic volume between the contiguous and random placement approaches, due to other applications (sAMG in particular) utilizing the same links. CrystalRouter in Workload~\Rmnum{2} additionally experiences more load on its channels using random allocation configurations, as shown in Figure~\ref{fig:syn-cr-lc-traffic} and \ref{fig:syn-cr-lc-traffic}. However, the maximal load under random allocation is closer to that observed in contiguous allocations as compared to MultiGrid.
 
 \begin{figure*}[t]
     \centering
@@ -211,14 +211,15 @@ MultiGrid in Workload~\Rmnum{2} appears most similar to AMG in Workload~\Rmnum{1
 
 
 
-\subsection{Observations}
+\subsection{Key Observations}
 
 %\NOTE{rewrote this somewhat. The observations made were essentially the same as the previous section}
 
 Revisiting the observations in Section~\ref{sec:workload-1-observations}, we
 find that those observations are held under this separate configuration.
-System-level performance is still much improved in terms of load-balancing.
-sAMG, being far and away the most communication-intensive application, benefits
+%System-level performance is still much improved in terms of load-balancing.
+System-level performance is still much improved in terms of load-balancing with random placement.
+sAMG, being far and away the most communication-intensive application in Workload~\Rmnum{2}, benefits
 greatly from random placement, whereas in Workload~\Rmnum{1} AMG was effectively
 penalized for being less communication-intensive. CrystalRouter, being the
 comparatively less communication-intensive application in Workload~\Rmnum{2},
@@ -226,10 +227,10 @@ experiences performance regressions in Workload~\Rmnum{2} under random and adapt
 policies.
 
 Interestingly, in both Workload~\Rmnum{1} and \Rmnum{2}, MultiGrid experiences
-a more subtle performance behavior than the significant swings in performance
-seen in the other applications. These behaviors persisted across multiple runs
+a more subtle performance variatioin than the significant swings in performance
+observed in the other applications. These behaviors persisted across multiple runs
 with different random seeds. Additionally, CrystalRouter in Workload~\Rmnum{2}
-sees less drastic changes in maximal load, but still experiences performance
+exhibits less drastic changes in maximal load, but still experiences performance
 regressions. We are continuing to work towards understanding the root causes
 and implications of this behavior, for which we expect application-specific
 communication patterns to be an important factor. 
