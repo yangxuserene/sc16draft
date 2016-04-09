@@ -1,7 +1,7 @@
 \section{Related Work}
 \label{sec:related work}
 
-The impact of job placement on both systems and applications has been the subject of many studies.
+The impact of job placement on system behavior and application performance has been the subject of many studies.
 %~\cite{dskinner,abhinav-sc13,jose-ipdps15}. 
 We focus on the HPC-centric studies here. Skinner et al.\ identified significant performance variability due to network contention.~\cite{dskinner}. They found that performance variability is inevitable on either torus or fat-tree networks when network sharing among concurrently running applications is allowed.
 %\TODO{what kind of system?}. 
@@ -12,6 +12,7 @@ Recently, several researchers have investigated job placement and routing algori
 Jain et al. conducted a comprehensive analysis of various job placement and routing policies with regard to network link throughput on dragonfly network~\cite{jain-sc14}. Their work is based on an analytical model and synthetic workload. Bhatele et al. used coarse-grain simulation to study the performance of synthetic workloads under the different task mapping and routing policies on two-level direct networks~\cite{bhatele-sc11}. Mubarak et al.\ focused on  the modeling of large-scale dragonfly networks with parallel event driven simulation. The dragonfly network model for million-node configurations presented in their work strongly scales when going from 1,024 to 65,536 MPI tasks on IBM Blue Gene/P and IBM Blue Gene/Q systems~\cite{codes-dragonfly}. The dragonfly model used in this paper is from their work. 
 %\TODO{mention Misbah's dragonfly work, for which our work is based on}.
 
-Our work complements the literature in the following ways. First, our simulations are driven by real application traces intended to be representative of production-scale application patterns. Second, we holistically examine behavior at both the overall system level as well as the application level, though we do not consider communication-pattern specific application mappings as Bogdan et al.\ did. Third, with the CODES simulation toolkit and related network models~\cite{codes, codes-dragonfly},  
+Our work complements the literature in the following aspects. First, our simulations are driven by real application traces intended to be representative of production-scale application patterns. Second, we holistically examine network behavior at both the overall system level as well as the individual application level, though we do not consider communication-pattern specific application mappings as Bogdan et al.\ did. Third, with the CODES simulation toolkit and related network models~\cite{codes, codes-dragonfly},  
 %\TODO{cite codes, Misbah's dragonfly work}, 
-we are able to simulate and examine system and application behavior at a very fine grain, collecting data at the dragonfly link level with packet-level fidelity. We believe these differences allowed us to uncover the ``bullying'' behavior, which to our knowledge is unreported in the literature. However, in a sense, Bogdan et al.'s work suggests these types of behaviors as possibilities deriving from the balance-first design rationale for the dragonfly.
+we are able to simulate and examine system and application behavior at a very fine grain, collecting data at the dragonfly link level with packet-level fidelity. We believe these differences allowed us to uncover the ``bully'' behavior, which to our knowledge is unreported in the literature. However, in a sense, Bogdan et al.'s work suggests these types of behaviors as possibilities deriving from the balance-first design rationale for the dragonfly.
+
