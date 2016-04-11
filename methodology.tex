@@ -34,7 +34,7 @@ The parameters for building the dragonfly network studied in our work are chosen
 In our dragonfly network, each group consists of $a = 8$ routers connected via all-to-all local channels. For each router, there are $p = 4$ compute nodes attached to it via terminal links. Each router also has $h = 4$ global channels used for intergroup connections. The radix of each router is hence $k = a+h+p-1 = 15$. 
 The total number of groups is $g = a*h+1 = 33 $ and the total number of compute nodes is $N = p*a*g = 1056$. 
 %\NOTE{What's the resulting router radix? What's the classic $a,h,p$ (or whatever they are :) parameters? done! } 
-The dragonfly link bandwidths are 5.25 GiB/s for the local and terminal router-ports and 4.7 GiB/s for the global ports, inspired by the Cray Cascade system~\cite{faanes} 
+The dragonfly link bandwidths are 5.25 GiB/s for the local and terminal router-ports and 4.7 GiB/s for the global ports, inspired by the Cray Cascade system~\cite{faanes}.  
 %\NOTE{What are these bandwidths? done!}. 
 In this work, we simulate the network performance and job interference across six different job placement and routing policy combinations, which are summarized in Table~\ref{tab: placement routing configs}.
 
@@ -67,7 +67,7 @@ Our analysis focuses on the following metrics:
 
     \item \textbf{Network Traffic:} The traffic refers to the amount of data in bytes going through each router. We analyze the traffic on each terminal and on the local and global channels of each router. The network reaches optimal performance when the traffic is uniformly distributed and no particular network link is over-loaded. 
             
-    \item \textbf{Network Saturation Time:} The saturation time refers to the time period when the buffer of a certain port in the router is full. We analyze the saturation time of ports corresponding to terminal links, local and global channels. The saturated time indicates the congestion level of routers. 
+    \item \textbf{Network Saturation Time:} The saturation time refers to the time period when the buffer of a certain port in the router is full. We analyze the saturation time of ports corresponding to terminal links, local and global channels. The saturation time indicates the congestion level of routers. 
     
     \item \textbf{Communication Time:} The communication time of each MPI rank refers to the time it spends in completing all its message exchanges with other ranks. Due to the use of simulation, we are able to measure the absolute (simulated) time a message takes to reach its destination. The performance of each application is measured by the communication time distribution across all its ranks.    
     
