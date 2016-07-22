@@ -6,8 +6,10 @@
 In this section, we use a different experimental configuration to verify and
 explore the observations made in the previous section. Specifically, we conduct
 the same sets of experiments through Workload~\Rmnum{2}, which consists of sAMG,
-MultiGrid and CrystalRouter. By replacing AMG with sAMG, we turn the ``bully"
-into the ``bullied".
+MultiGrid and CrystalRouter.
+%\NOTE{By replacing AMG with sAMG, we turn the ``bully" into the ``bullied".} 
+The ``bully" becomes the ``bullied" with the presence of sAMG in Workload~\Rmnum{2}. 
+
 
 \subsection{Network Performance Analysis}
 \label{sec: workload-2 network analysis}
@@ -30,42 +32,42 @@ indirection.
     \centering
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/gc-traffic}
+        \includegraphics[height=1.5 in]{syn-wkld/gc-traffic}
         \caption{Global Channel Traffic}
         \label{fig:synwkld-global-channel-traffic}
     \end{subfigure}\hfill
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/lc-traffic}
+        \includegraphics[height=1.5 in]{syn-wkld/lc-traffic}
         \caption{Local Channel Traffic}
         \label{fig:synwkld-local-channel-traffic}
     \end{subfigure}\hfill
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/tl-traffic}
+        \includegraphics[height=1.5 in]{syn-wkld/tl-traffic}
         \caption{Terminal Link Traffic}
         \label{fig:synwkld-terminal-link-traffic}
     \end{subfigure}\\
 
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/gc-btime}
+        \includegraphics[height=1.5 in]{syn-wkld/gc-btime}
         \caption{Global Channel Saturation Time}
         \label{fig:synwkld-global-channel-stime}
     \end{subfigure}\hfill
      \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/lc-btime}
+        \includegraphics[height=1.5 in]{syn-wkld/lc-btime}
         \caption{Local Channel Saturation Time}
         \label{fig:synwkld-local-channel-stime}
     \end{subfigure}\hfill
     \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
-        \includegraphics[height=1.8 in]{syn-wkld/tl-btime}
+        \includegraphics[height=1.5 in]{syn-wkld/tl-btime}
         \caption{Terminal Link Saturation Time}
         \label{fig:synwkld-terminal-link-stime}
     \end{subfigure}%
@@ -131,6 +133,7 @@ which we expect is due to a higher degree of network isolation.
         \caption{MultiGrid}
         \label{fig:syn-mg-commtime}
     \end{subfigure}%
+    \hspace{1em}%
     \begin{subfigure}[t]{0.32\textwidth}
         \centering
         \includegraphics[height=1.5 in]{syn-wkld/cr/commtime}
