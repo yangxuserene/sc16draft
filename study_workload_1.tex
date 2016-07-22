@@ -56,7 +56,7 @@ We first study the network performance at the system level by analyzing the degr
         \caption{Terminal Link Saturation Time}
         \label{fig:terminal-link-stime}
     \end{subfigure}%
-    \caption{Aggregate traffic and saturation time for Workload~\Rmnum{1} under the configurations listed in Table~\ref{tab: placement routing configs}. ``CA'' and ``CPA'' have equivalent behavior.}
+    \caption{Aggregate traffic and saturation time for Workload~\Rmnum{1} under the configurations listed in Table~\ref{tab: placement routing configs}. ``adp'' and ``padp'' have equivalent behavior.}
    \label{fig:wkld-network-traffic-stime}
 \end{figure*}
 
@@ -64,13 +64,13 @@ We first study the network performance at the system level by analyzing the degr
 Figure~\ref{fig:wkld-network-traffic-stime} shows the aggregate traffic for terminal links, local and global channels,
 as well as the corresponding saturation time for Workload~\Rmnum{1} under the placement and routing configurations summarized in Table~\ref{tab: placement routing configs}.
 %explain CM
-When contiguous placement is coupled with minimal routing (CM), 
+When contiguous placement is coupled with minimal routing (cont-min), 
 application traffic is confined within the consecutively allocated groups, 
 causing congestion on some routers along minimal paths to and from application nodes. 
 Both local and global channels experience significant congestion, as applications span multiple groups.
 Similarly, the saturation time for both local and global channels are the highest compared with other configurations.
 %explain CA and CPA
-When contiguous placement is coupled with adaptive (CA) and progressive adaptive (CPA) routing, 
+When contiguous placement is coupled with adaptive (cont-adp) and progressive adaptive (cont-padp) routing, 
 traffic is able to take non-minimal paths via intermediate routers, helping to alleviate congestion along the minimal paths. 
 The resulting traffic through the most utilized local and global channels are greatly reduced, 
 as shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}. 
@@ -87,7 +87,7 @@ Random placement uniformly distributes MPI ranks over the network,
 balancing the resulting traffic load. 
 As shown in Figures~\ref{fig:global-channel-traffic} and~\ref{fig:local-channel-traffic}, 
 no router experiences an exceptionally high volume of traffic on its local and global channels. 
-When random placement is coupled with minimal routing (RM), less traffic is generated on account of
+When random placement is coupled with minimal routing (rand-min), less traffic is generated on account of
 the packets avoiding intermediate forwarding. At the same time, there is still significant congestion on local channels due to the lack of ability of packets to traverse non-minimal routes, falling into the same trap as the contiguous-minimal configuration.
 %\TODO{check this}
 %Explain RA, RPA
@@ -257,7 +257,7 @@ the performance of MultiGrid and CrystalRouter are significant improved, whereas
         \caption{AMG Global Channel Traffic}
         \label{fig:amg-gc-traffic}
     \end{subfigure}
-   \caption{Aggregate workload traffic for routers serving specific applications. ``CA'' and ``CPA'' have equivalent behavior. More routers are involved in serving each application when random placement is in use, compared to contiguous placement.}
+   \caption{Aggregate workload traffic for routers serving specific applications. ``adp'' and ``padp'' have equivalent behavior. More routers are involved in serving each application when random placement is in use, compared to contiguous placement.}
    \label{fig:3app-lc-gc-traffic}
 \end{figure*}
 
