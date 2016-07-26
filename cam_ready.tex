@@ -273,16 +273,8 @@
 
 
 
-\makeatletter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-\def\ps@IEEEtitlepagestyle{%
-  \def\@oddfoot{\mycopyrightnotice}%
-  \def\@evenfoot{}%
-}
-\def\mycopyrightnotice{%
-  {\footnotesize 978-1-4673-8815-3/16/\$31.00 \textcopyright 2016 IEEE\hfill}% <--- Change here
-  \gdef\mycopyrightnotice{}% just in case
-}
+\IEEEoverridecommandlockouts
+\IEEEpubid{\makebox[\columnwidth]{ 978-1-4673-8815-3/16/\$31.00 \textcopyright 2016 IEEE \hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
